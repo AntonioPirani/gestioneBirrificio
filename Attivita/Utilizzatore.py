@@ -20,7 +20,7 @@ class Utilizzatore:
         self.telefono = telefono
 
     @abstractmethod
-    def ricercaUtilizzatore(nome, cognome):
+    def ricercaUtilizzatore(self, nome, cognome):
         pass
 
     def visualizzaUtilizzatore(self):
