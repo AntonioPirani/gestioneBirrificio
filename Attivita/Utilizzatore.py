@@ -42,3 +42,5 @@ class Utilizzatore:
         self.email = ""
         self.nome = ""
         self.telefono = 0
+
+    
