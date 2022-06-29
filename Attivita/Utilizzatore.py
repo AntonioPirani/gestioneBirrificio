@@ -4,6 +4,7 @@ from abc import abstractmethod
 class Utilizzatore:
 
     def __init__(self):
+        self.codice = ""
         self.codiceFiscale = ""
         self.cognome = ""
         self.dataNascita = datetime.datetime(year=1970, month=1, day=1)
@@ -11,7 +12,7 @@ class Utilizzatore:
         self.nome = ""
         self.telefono = 0
 
-    def aggiungiUtilizzatore(self, telefono, nome, email, dataNascita, cognome, codiceFiscale):
+    def aggiungiUtilizzatore(self, telefono, nome, email, dataNascita, cognome, codiceFiscale, codice):
         self.codiceFiscale = codiceFiscale
         self.cognome = cognome
         self.dataNascita = dataNascita

@@ -9,6 +9,6 @@ class Dipendente(Utilizzatore):
         super().__init__()
         self.indirizzo = ""
 
-    def aggiungiDipendente(self, indirizzo, nome, telefono, email, cognome, dataNascita, codiceFiscale):
-        self.aggiungiUtilizzatore(nome, telefono, email, cognome, dataNascita, codiceFiscale)
+    def aggiungiDipendente(self, indirizzo, nome, telefono, email, cognome, dataNascita, codiceFiscale, codice):
+        self.aggiungiUtilizzatore(nome, telefono, email, cognome, dataNascita, codiceFiscale, codice)
         self.indirizzo = indirizzo
