@@ -19,20 +19,21 @@ class Utilizzatore:
         self.email = email
         self.nome = nome
         self.telefono = telefono
+        self.codice = codice
 
     @abstractmethod
     def ricercaUtilizzatore(self, nome, cognome):
         pass
 
     def visualizzaUtilizzatore(self):
-
-        visualizza = ("codiceFiscale: " + self.codiceFiscale + 
-                      "cognome: " + self.cognome + 
-                      "dataNascita: " + self.dataNascita + 
-                      "email:" + self.email + 
-                      "nome: " + self.nome + 
-                      "telefono: " + self.telefono)
-        return visualizza
+        return {
+                "codiceFiscale": self.codiceFiscale,
+                "cognome":  self.cognome,
+                "dataNascita":  self.dataNascita,
+                "email":  self.email,
+                "nome":  self.nome, 
+                "telefono":  self.telefono,
+        }
 
     def rimuoviUtilizzatore(self):
         self.codice = -1
@@ -42,5 +43,3 @@ class Utilizzatore:
         self.email = ""
         self.nome = ""
         self.telefono = 0
-
-    

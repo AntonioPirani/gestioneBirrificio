@@ -11,8 +11,9 @@ class Dipendente(Utilizzatore):
         self.indirizzo = ""
 
     def aggiungiDipendente(self, indirizzo, nome, telefono, email, cognome, dataNascita, codiceFiscale, codice):
-        self.aggiungiUtilizzatore(nome, telefono, email, cognome, dataNascita, codiceFiscale, codice)
+        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale, codice)
         self.indirizzo = indirizzo
+        dipendenti = {}
         if os.path.isfile('Dati/Dipendenti.pickle'):
             with open('Dati/Dipendenti.pickle', 'rb') as f:
                 dipendenti = pickle.load(f)
@@ -42,6 +43,6 @@ class Dipendente(Utilizzatore):
         del self
 
     def visualizzaDipendente(self):
-        visualizza = self.visualizzaUtilizzatore
-        visualizza += "indirizzo: " + self.indirizzo
-        return visualizza 
+        visualizza = self.visualizzaUtilizzatore()
+        visualizza["indirizzo"] = self.indirizzo
+        return visualizza
