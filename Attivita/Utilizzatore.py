@@ -32,7 +32,6 @@ class Utilizzatore:
                       "email:" + self.email + 
                       "nome: " + self.nome + 
                       "telefono: " + self.telefono)
-        
         return visualizza
 
     def rimuoviUtilizzatore(self):
