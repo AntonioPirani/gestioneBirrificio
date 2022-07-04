@@ -44,3 +44,12 @@ class Inventario:
                 return None
         else:
             return None
+
+    # metodo per la visualizzazione dell'inventario
+    def visualizzaInventario(self):
+        if os.path.isfile('Dati\Inventario.pickle'):
+            with open('Dati\Inventario.pickle', 'rb') as f:
+                inventario = dict(pickle.load(f))
+                return inventario
+        else:
+            return None
