@@ -22,3 +22,30 @@ class Cliente(Utilizzatore):
         clienti[codice] = self
         with open('Dati/Clienti.pickle', 'wb') as f:
             pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
+
+    def ricercaUtilizzatore(self, nome, cognome):
+        if os.path.isfile('Dati/Clienti.pickle'):
+            with open('Dati/Clienti.pickle', 'rb') as f:
+                clienti = dict(pickle.load(f))
+                for cliente in clienti.values():
+                    if cliente.nome == nome and cliente.cognome == cognome:
+                        return cliente
+                return None
+        else:
+            return None
+
+    def rimuoviCliente(self):
+        if os.path.isfile('Dati/Clienti.pickle'):
+            with open('Dati/Clienti.pickle', 'wb+') as f:
+                clienti = dict(pickle.load(f))
+                del clienti[self.codice]
+                pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
+        self.rimuoviUtilizzatore()
+        self.informazioni = ""
+        self.tipologia = ""
+        del self
+
+    def visualizzaCliente(self):
+        visualizza = self.visualizzaUtilizzatore
+        visualizza += "informazioni: " + self.informazioni + "tipologia: " + self.tipologia
+        return visualizza 

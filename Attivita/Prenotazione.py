@@ -89,10 +89,20 @@ class Prenotazione:
 
 
     def conferma(self):
-        self.confermata = True
+        if os.path.isfile('Dati\Prenotazioni.pickle'):
+            with open('Dati\Prenotazioni.pickle', 'wb+') as f:
+                prenotazione = dict(pickle.load(f))
+                self.confermata = True
+
+                prenotazione[self.codice] = self
+                pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
 
 
-    def controllaDisponibilita(self):
-
-
-
+    def controllaDisponibilita(self, tipologia, quantita):
+        inventario = {}
+        if os.path.isfile('Dati\Inventario.pickle'):
+            with open('Dati\Inventario.pickle', 'rb') as f:
+                inventario = pickle.load(f)
+                if inventario[tipologia] > quantita:
+                    return True
+        return False
