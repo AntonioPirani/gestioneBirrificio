@@ -21,8 +21,8 @@ class Dipendente(Utilizzatore):
             pickle.dump(dipendenti, f, pickle.HIGHEST_PROTOCOL)
 
     def ricercaUtilizzatore(self, nome, cognome):
-        if os.path.isfile('Dati/Clienti.pickle'):
-            with open('Dati/Clienti.pickle', 'rb') as f:
+        if os.path.isfile('Dati/Dipendenti.pickle'):
+            with open('Dati/Dipendenti.pickle', 'rb') as f:
                 dipendenti = dict(pickle.load(f))
                 for dipendente in dipendenti.values():
                     if dipendente.nome == nome and dipendente.cognome == cognome:
