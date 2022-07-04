@@ -1,7 +1,7 @@
 import datetime
 import os.path
 import pickle
-#from dateutil.relativedelta import relativedelta
+import pandas as pd
 
 class Produzione:
 
@@ -13,88 +13,65 @@ class Produzione:
         self.materieUtilizzate = None
         self.note = ""
         self.prodotto = None
-        self.temperatura = -1
+        self.temperatura = -1.0
+        self.composto =""
 
-    #get e set del codice non presente sul diagramma delle classi
-    def getCodiceProduzione(self):
-        return self.codiceProduzione
-    def setCodiceProduzione(self, codiceProduzione):
+
+    def inizioLavorazione(self, codiceProduzione):
         self.codiceProduzione = codiceProduzione
-
-    def getDataInizio(self):
-        return self.dataInizio
-    def setDataInizio(self, dataInizio):
-        self.dataInizio = dataInizio
-
-    def getDataFine(self):
-        return self.DataFine
-    def setDataFine(self, dataFine):
-        self.dataFine = dataFine
-
-    def getLivello(self):
-        return self.livello
-    def setLivello(self, livello):
-        self.livello = livello
-
-    def getMaterieUtilizzate(self):
-        return self.materieUtilizzate
-    def setMaterieUtilizzate(self, materieUtilizzate):
-        self.materieUtilizzate = materieUtilizzate
-
-    def getNote(self):
-        return self.note
-    def setNote(self, note):
-        self.note = note
-
-    def getProdotto(self):
-        return self.prodotto
-    def setNote(self, prodotto):
-        self.prodotto = prodotto
-
-    def getTemperatura(self):
-        return self.temperatura
-    def setTemperatura(self, temperatura):
-        self.temperatura = temperatura
-
-    def inizioLavorazione(self, materieUtilizzate): #materieUtilizzate da aggiungere nel diagramma delle classi -> inizioLavorazione(Materia)
-        # print("Quale tipo di materia prima necessiti?")
-        #tipologia=input()
-        #if tipologia non presente in materieUtilizzate
-
-        self.codiceProduzione = 0 # non va bene
         self.dataInizio = datetime.date.today()
-        #self.dataFine = self.dataInizio + relativedelta(months=1) #la fine della produzione avviene dopo un mese dall'inizio (necessita di scaricarsi il pacchetto dateutil)
-        self.livello=0;
+        self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un mese dall'inizio (necessita di scaricarsi il pacchetto dateutil)
+        self.livello=1;
         self.temperatura=18.0
-        #self.prodotto= Prodotto()
+        self.composto = "Composto"+codiceProduzione
 
     def ricercaProduzione(self, codiceProduzione):
-        if os.path.isfile('Dati/Produzione.pickle'):
-            with open('Dati/Produzione.pickle', 'rb') as f:
+        if os.path.isfile('Dati/Produzioni.pickle'):
+            with open('Dati/Produzioni.pickle', 'rb') as f:
                 produzioni = pickle.load(f)
                 return produzioni[codiceProduzione]
         else:
             return None
 
-    def controllaProdotto(self, Prodotto, temperatura, livello):
-        #while prodotto in lavorazione
-        self.getTemperatura
-        self.getLivello
-        #il composto?
-        if temperatura > 100 or livello > 2: # i numeri sono a caso
-            self.segnalaAnomalia(temperatura, livello)
+    def controllaProdotto(self, codiceProduzione, temperatura, livello, composto, dataInizio, dataFine):
 
+        while dataInizio < dataFine:
+            print(temperatura)
+            print(livello)
+            print(composto)
+            dataInizio = dataInizio + pd.DateOffset(hours=4)
+            if temperatura > 100 or livello > 2 or composto != "Composto"+codiceProduzione: #i numeri sono a caso
+                self.segnalaAnomalia(codiceProduzione)
 
-    def segnalaAnomalia(self, temperatura, livello):
+    def segnalaAnomalia(self, codiceProduzione):
         print("SEGNALATA ANOMALIA")
         self.temperatura = 50
         self.livello = 1
-        #composto?
+        self.composto="Composto"+codiceProduzione
         return True
 
-    #def registraProdotto(self, prodotto):
+    def registraProdotto(self, codiceProduzione, dataInizio, dataFine, livello, materieUtilizzate, note, prodotto, temperatura, composto):
+        self.codiceProduzione = codiceProduzione
+        self.dataInizio = dataInizio
+        self.dataFine = dataFine
+        self.livello = livello
+        self.materieUtilizzate = materieUtilizzate
+        self.note = note
+        self.prodotto = prodotto
+        self.temperatura = temperatura
+        self.composto = composto
+        prodotti = {}
+        if os.path.isfile('Dati/Produzioni.pickle'):
+            with open('Dati/Produzioni.pickle', 'rb') as f:
+                prodotti = pickle.load(f)
+        prodotti[codiceProduzione] = self
+        with open('Dati/Produzioni.pickle', 'wb') as f:
+            pickle.dump(prodotti, f, pickle.HIGHEST_PROTOCOL)
 
-    #def aggiornaMagazzino(self, note, temperatura):
+
+
+
+    #def aggiornaMagazzino(self, string, temperatura):
 
 
 
