@@ -53,6 +53,7 @@ class Prenotazione:
                 prenotazioni = pickle.load(f)
                 del prenotazioni[self.codice]
                 pickle.dump(prenotazioni, f, pickle.HIGHEST_PROTOCOL)
+
             self.codice = 0
             self.cliente = None
             self.confermata = False
@@ -63,24 +64,42 @@ class Prenotazione:
             del self
 
 
-    def modificaPrenotazione(self, prodotti):
+    def modificaPrenotazione(self, prodotti, codice):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
-            with open('Dati\Prenotazioni.pickle', 'wb+') as f:
+            with open('Dati\Prenotazioni.pickle', 'rb') as f:
                 prenotazione = dict(pickle.load(f))
 
                 self.prodotti = prodotti
                 self.quantitaTotale = self.calcolaQuantita(self)
                 self.importoTotale = self.calcolaImporto(self)
+                prenotazione[codice] = self
 
-                prenotazione[self.codice] = self
-                pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
+        with open('Dati\Prenotazioni.pickle', 'wb') as f:
+            pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
 
-    def visualizzaPrenotazione(self):
+
+    def ricercaPrenotazione(self, codice):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
             with open('Dati\Prenotazioni.pickle', 'rb') as f:
                 prenotazioni = dict(pickle.load(f))
-                # accesso tramite chiave
+                f.close()
                 try:
+                    self = prenotazioni[codice]
+                    return self
+                except:
+                    return None
+        return None
+
+
+    def visualizzaPrenotazione(self, codice):
+        self = self.ricercaPrenotazione(codice)
+        if os.path.isfile('Dati\Prenotazioni.pickle'):
+            with open('Dati\Prenotazioni.pickle', 'rb') as f:
+                prenotazioni = dict(pickle.load(f))
+                #accesso tramite chiave
+                f.close()
+                try:
+                    print(self)
                     return prenotazioni[self.codice]
                 except:
                     return None
@@ -88,21 +107,26 @@ class Prenotazione:
             return None
 
 
-    def conferma(self):
+    def conferma(self, codice):
+        self = self.ricercaPrenotazione(codice)
         if os.path.isfile('Dati\Prenotazioni.pickle'):
-            with open('Dati\Prenotazioni.pickle', 'wb+') as f:
+            with open('Dati\Prenotazioni.pickle', 'rb') as f:
                 prenotazione = dict(pickle.load(f))
                 self.confermata = True
-
                 prenotazione[self.codice] = self
-                pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
+
+        with open('Dati\Prenotazioni.pickle', 'wb') as f:
+            pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
 
 
     def controllaDisponibilita(self, tipologia, quantita):
-        inventario = {}
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
-                inventario = pickle.load(f)
-                if inventario[tipologia] > quantita:
-                    return True
+                inventario = dict(pickle.load(f))
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == tipologia and prodotto.quantita > quantita:
+                        return True
         return False
+
+    def __str__(self):
+        return f'Prenotazione({self.codice}, {self.cliente}, {self.prodotti}, {self.dataInserimento}, {self.importoTotale}, {self.quantitaTotale}, {self.confermata})'
