@@ -35,8 +35,8 @@ class Inventario:
     #metodo per ricercare un prodotto nell'inventario
 
     def ricercaProdotto(self, nomeProdotto):
-        if os.path.isfile('Dati/Prodotto.pickle'):
-            with open('Dati/Prodotto.pickle','rb') as f:
+        if os.path.isfile('Dati/Inventario.pickle'):
+            with open('Dati/Inventario.pickle','rb') as f:
                 prodotti = pickle.load(f)
                 for prodotto in prodotti.values():
                     if prodotto.nomeProdotto == nomeProdotto:
@@ -53,3 +53,14 @@ class Inventario:
                 return inventario
         else:
             return None
+
+    # metodo per aggiornare il magazzino
+    def aggiornaMagazzino(self, materiePrime):
+        self.materiePrime = materiePrime
+
+        app = {}
+        if os.path.isfile('Dati/Inventario.pickle'):
+            with open('Dati/Inventario.pickle', 'rb') as file:
+                app = pickle.load(file)
+
+        app = self
