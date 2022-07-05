@@ -39,8 +39,8 @@ class Ricevuta:
 
         # metodo per la ricerca di una ricevuta
         def ricercaRicevuta(self, num):
-            if os.path.isfile('Dati/Ricevuta.pickle'):
-                with open('Dati/Ricevuta.pickle', 'rb') as f:
+            if os.path.isfile('Dati/Ricevute.pickle'):
+                with open('Dati/Ricevute.pickle', 'rb') as f:
                     ricevuta = pickle.load(f)
                     return ricevuta[num]
             else:
@@ -48,8 +48,8 @@ class Ricevuta:
 
         # metodo per la visualizzazione di una ricevuta
         def visualizzaRicevuta(self):
-            if os.path.isfile('Dati\Ricevuta.pickle'):
-                with open('Dati\Ricevuta.pickle', 'rb') as f:
+            if os.path.isfile('Dati\Ricevute.pickle'):
+                with open('Dati\Ricevute.pickle', 'rb') as f:
                     ricevuta = dict(pickle.load(f))
                     try:
                         return ricevuta[self.codice]
@@ -57,3 +57,18 @@ class Ricevuta:
                         return None
             else:
                 return None
+
+        # metodo per il salvataggio della ricevuta
+        def salvaRicevuta(self, codice, dataEmissione, importo, prodotti):
+            self.codice = codice
+            self.dataEmissione = dataEmissione
+            self.importo = importo
+            self.prodotti = prodotti
+
+            ricevuta = {}
+            if os.path.isfile('Dati/Ricevute.pickle'):
+                with open('Dati/Ricevute.pickle', 'rb') as file:
+                    ricevute = pickle.load(file)
+
+            ricevute[codice] = self
+
