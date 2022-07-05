@@ -64,3 +64,5 @@ class Inventario:
                 app = pickle.load(file)
 
         app = self
+        with open('Dati/Inventario.pickle', 'wb') as file:
+            pickle.dump(app, file, pickle.HIGHEST_PROTOCOL)
