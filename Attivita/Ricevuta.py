@@ -70,5 +70,7 @@ class Ricevuta:
                 with open('Dati/Ricevute.pickle', 'rb') as file:
                     ricevute = pickle.load(file)
 
-            ricevute[codice] = self
+            ricevuta[codice] = self
 
+            with open('Dati/Ricevute.pickle', 'wb') as file:
+                pickle.dump(ricevuta, file, pickle.HIGHEST_PROTOCOL)
