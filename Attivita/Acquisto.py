@@ -15,8 +15,9 @@ class Acquisto:
 
     def verificaPrenotazione(self, codiceP):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
-            with open('Dati\Prenotazioni.pickle', 'rb') as f:
-                prenotazioni = dict(pickle.load(f))
+            with open('Dati\Prenotazioni.pickle', 'rb') as file:
+                prenotazioni = dict(pickle.load(file))
+                file.close()
 
                 for prenotazione in prenotazioni.values():
                     if prenotazione.codice == codiceP:
@@ -58,21 +59,18 @@ class Acquisto:
         #self.quantitaTotale()
         self.dataAcquisto = datetime.datetime.now()
 
-        #self.registraAcquisto(codice) #TODO
+        self.registraAcquisto(codice)
         #for prodotto in elencoProdotti:
         #    self.aggiornaQuantita(prodotto.tipologia, prodotto.quantita)
 
 
     def registraAcquisto(self, codice):
-        print(self)
         acquisto = {}
         if os.path.isfile('Dati\Acquisti.pickle'):
             with open('Dati\Acquisti.pickle', 'rb') as f:
                 acquisto = pickle.load(f)
 
-        print(self)
         acquisto[codice] = self
-
         with open('Dati\Acquisti.pickle', 'wb') as g:
             pickle.dump(acquisto, g, pickle.HIGHEST_PROTOCOL)
 
