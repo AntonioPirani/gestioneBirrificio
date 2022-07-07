@@ -13,7 +13,8 @@ class Bicchiere(Prodotto):
         self.aggiungiProdotto(tipologia, quantita, descrizione, gradazioneAlcolica, lotto, scadenza)
         self.capacita = capacita
         self.prezzo = prezzo
-        pass
+
+        return self
 
     def rimuoviBicchiere(self, tipologia):
         pass
