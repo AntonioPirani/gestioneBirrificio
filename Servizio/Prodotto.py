@@ -11,7 +11,6 @@ class Prodotto:
         self.tipologia = ''
         self.quantita = 0
 
-
     def aggiungiProdotto(self, tipologia, quantita, descrizione='', gradazioneAlcolica=0.0, lotto='', scadenza=datetime.datetime(2022,1,1)):
         self.descrizione = descrizione
         self.gradazioneAlcolica = gradazioneAlcolica
@@ -21,3 +20,12 @@ class Prodotto:
         self.quantita = quantita
 
         return self
+
+    def rimuoviProdotto(self, tipologia):
+        pass
+
+    def modificaProdotto(self, tipologia):
+        pass
+
+    def __str__(self):
+        return f'Prodotto({self.tipologia}, {self.quantita})'
