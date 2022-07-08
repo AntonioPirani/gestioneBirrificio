@@ -1,17 +1,34 @@
-from datetime import datetime
-from xmlrpc.client import DateTime
-from Attivita.Dipendente import Dipendente
 import datetime
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from Attivita.Acquisto import Acquisto
+from Attivita.Cliente import Cliente
+from Servizio.Bottiglia import Bottiglia
+from Attivita.Prenotazione import Prenotazione
+from copy import deepcopy
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    dipendente = Dipendente()
-    #dipendente.aggiungiDipendente("aaaa", "pippo", 33333, "mail", "pluto", datetime.datetime(1989, 10, 20), "sndkv", "1")
-    #print(dipendente.visualizzaDipendente())
-    dipendentesecondo = Dipendente().ricercaUtilizzatore('pippo', 'pluto')
-    print(dipendentesecondo.visualizzaDipendente())
+    #acquisto = Acquisto()
+    #acquisto.verificaPrenotazione(3)
+    #acquisto.effettuaAcquisto(1, None, 3)
+    #acquisto.effettuaAcquisto(1, 'Giana', 3)
+    #acquisto.effettuaAcquisto(1, None)
+
+    elenco = []  # list
+    p = Bottiglia()
+
+    p = p.aggiungiBottiglia('Giana', 10)
+    d = deepcopy(p)
+    elenco.append(d)
+
+    p = p.aggiungiBottiglia('Papola', 5)
+    d = deepcopy(p)
+    elenco.append(d)
+
+    #for elem in elenco:
+    #    print(elem)
+    cliente = Cliente()
+    cliente.aggiungiCliente('test', 'privato', 'Pino', 331, 'pippo@gmail', 'Pinoli', datetime.datetime(2001,10,13), 'CF', 0)
+
+    pren = Prenotazione(elenco)
+    pren.aggiungiPrenotazione(2, cliente, elenco)        #for elem in pren.prodotti:  #print(elem)
+    print(pren)

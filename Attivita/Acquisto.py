@@ -7,8 +7,8 @@ class Acquisto:
 
     def __init__(self):
         self.codice = -1
-        self.dataAcquisto = datetime.datetime(1970, 1, 1, 0 , 0)
-        self.elencoProdotti = None
+        self.dataAcquisto = datetime.datetime(1970, 1, 1, 0, 0)
+        self.elencoProdotti = []
         self.quantitaTotale = 0
         self.importoTotale = 0.0
 
@@ -55,8 +55,8 @@ class Acquisto:
         else:
             return None
 
-        #self.importoTotale()
-        #self.quantitaTotale()
+        self.importoTotale()
+        self.quantitaTotale()
         self.dataAcquisto = datetime.datetime.now()
 
         self.registraAcquisto(codice)
