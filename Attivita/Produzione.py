@@ -23,11 +23,11 @@ class Produzione:
         self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un mese dall'inizio (necessita di scaricarsi il pacchetto dateutil)
         self.livello=1;
         self.temperatura=18.0
-        self.composto = "Composto"+codiceProduzione
+        self.composto = "Composto"+str(codiceProduzione)
 
     def ricercaProduzione(self, codiceProduzione):
-        if os.path.isfile('Dati/Produzioni.pickle'):
-            with open('Dati/Produzioni.pickle', 'rb') as f:
+        if os.path.isfile('Dati/Produzione.pickle'):
+            with open('Dati/Produzione.pickle', 'rb') as f:
                 produzioni = pickle.load(f)
                 return produzioni[codiceProduzione]
         else:
@@ -61,11 +61,11 @@ class Produzione:
         self.temperatura = temperatura
         self.composto = composto
         prodotti = {}
-        if os.path.isfile('Dati/Produzioni.pickle'):
-            with open('Dati/Produzioni.pickle', 'rb') as f:
+        if os.path.isfile('Dati/Produzione.pickle'):
+            with open('Dati/Produzione.pickle', 'rb') as f:
                 prodotti = pickle.load(f)
         prodotti[codiceProduzione] = self
-        with open('Dati/Produzioni.pickle', 'wb') as f:
+        with open('Dati/Produzione.pickle', 'wb') as f:
             pickle.dump(prodotti, f, pickle.HIGHEST_PROTOCOL)
 
 
