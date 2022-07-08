@@ -34,9 +34,10 @@ class Dipendente(Utilizzatore):
 
     def rimuoviDipendente(self):
         if os.path.isfile('Dati/Dipendenti.pickle'):
-            with open('Dati/Dipendenti.pickle', 'wb+') as f:
+            with open('Dati/Dipendenti.pickle', 'rb') as f:
                 dipendenti = dict(pickle.load(f))
                 del dipendenti[self.codice]
+            with open('Dati/Dipendenti.pickle', 'wb') as f:
                 pickle.dump(dipendenti, f, pickle.HIGHEST_PROTOCOL)
         self.rimuoviUtilizzatore()
         self.indirizzo = ""
