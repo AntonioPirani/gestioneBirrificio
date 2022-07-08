@@ -1,7 +1,6 @@
 import pickle
 import os
 
-
 from Attivita.Utilizzatore import Utilizzatore
 
 class Dipendente(Utilizzatore):
