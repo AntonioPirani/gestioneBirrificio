@@ -9,8 +9,8 @@ class Bicchiere(Prodotto):
         self.capacita = 0.0
         self.prezzo = 0.0
 
-    def aggiungiBicchiere(self, tipologia, quantita, capacita, prezzo, descrizione='', gradazioneAlcolica=0.0, lotto='', scadenza=datetime.datetime(2022,1,1)):
-        self.aggiungiProdotto(tipologia, quantita, descrizione, gradazioneAlcolica, lotto, scadenza)
+    def aggiungiBicchiere(self, tipologia, quantita, capacita, prezzo):
+        self.aggiungiProdotto(tipologia, quantita)
         self.capacita = capacita
         self.prezzo = prezzo
 
