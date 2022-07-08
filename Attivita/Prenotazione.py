@@ -4,28 +4,24 @@ import pickle
 
 class Prenotazione:
 
-    def __init__(self, prodotti):
+    def __init__(self):
         self.codice = 0
         self.cliente = None
         self.confermata = False
         self.dataInserimento = datetime.datetime(1970, 1, 1, 0, 0)
         self.importoTotale = 0.0
-        self.prodotti = prodotti
+        self.prodotti = []
         self.quantitaTotale = 0
 
-
-    def calcolaImporto(self):
-        tot = 0.0
+    def calcolaTotale(self):
+        iTot = 0.0
+        qTot = 0
         for prodotto in self.prodotti:
-            tot += prodotto.prezzoUnitario
-        return tot
-
-
-    def calcolaQuantita(self, prodotti):
-        tot = 0
-        for prodotto in prodotti:
-            tot += prodotto.quantita
-        return tot
+            prezzo = self.recuperaPrezzo(prodotto.tipologia)
+            iTot += prezzo * prodotto.quantita
+            qTot += prodotto.quantita
+        self.importoTotale = iTot
+        self.quantitaTotale = qTot
 
 
     def aggiungiPrenotazione(self, codice, cliente, prodotti):
@@ -33,8 +29,7 @@ class Prenotazione:
         self.cliente = cliente
         self.dataInserimento = datetime.datetime.now()
         self.prodotti = prodotti
-        self.quantitaTotale = self.calcolaQuantita(prodotti)
-        self.importoTotale = self.calcolaImporto()
+        self.calcolaTotale()
 
         prenotazione = {}
         if os.path.isfile('Dati/Prenotazioni.pickle'):
@@ -127,6 +122,15 @@ class Prenotazione:
                     if prodotto.tipologia == tipologia and prodotto.quantita > quantita:
                         return True
         return False
+
+    def recuperaPrezzo(self, tipologia):
+        if os.path.isfile('Dati\Prodotti.pickle'):
+            with open('Dati\Prodotti.pickle', 'rb') as f:
+                inventario = dict(pickle.load(f))
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == tipologia:
+                        return prodotto.prezzoUnitario
+        return 4.8
 
     def __str__(self):
         return f'Prenotazione({self.codice}, {self.cliente}, {self.prodotti}, {self.dataInserimento}, {self.importoTotale}, {self.quantitaTotale}, {self.confermata})'
