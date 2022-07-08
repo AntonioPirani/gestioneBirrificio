@@ -15,6 +15,7 @@ class Acquisto:
 
     def verificaPrenotazione(self, codiceP):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
+<<<<<<< HEAD
             with open('Dati\Prenotazioni.pickle', 'rb') as file:
                 prenotazioni = dict(pickle.load(file))
                 file.close()
@@ -93,3 +94,15 @@ class Acquisto:
 
     def __str__(self):
         return f'Acquisto({self.codice}, {self.elencoProdotti}, {self.dataAcquisto}, {self.importoTotale}, {self.quantitaTotale})'
+=======
+            with open('Dati\Prenotazioni.pickle', 'rb') as f:
+                prenotazioni = dict(pickle.load(f))
+
+                try:
+                    if not prenotazioni[codiceP]:
+                        return None
+                    else:
+                        return prenotazioni[codiceP]
+                except:
+                    return None
+>>>>>>> parent of be961d3 (Merge remote-tracking branch 'origin/master')

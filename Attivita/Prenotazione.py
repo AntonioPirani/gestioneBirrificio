@@ -4,27 +4,27 @@ import pickle
 
 class Prenotazione:
 
-    def __init__(self, prodotti):
+    def __init__(self):
         self.codice = 0
         self.cliente = None
         self.confermata = False
         self.dataInserimento = datetime.datetime(1970, 1, 1, 0, 0)
         self.importoTotale = 0.0
-        self.prodotti = prodotti
+        self.prodotti = None
         self.quantitaTotale = 0
 
 
     def calcolaImporto(self):
         tot = 0.0
         for prodotto in self.prodotti:
-            tot += prodotto.prezzoUnitario
+            tot += prodotto.getPrezzoUnitario()
         return tot
 
 
-    def calcolaQuantita(self, prodotti):
+    def calcolaQuantita(self):
         tot = 0
-        for prodotto in prodotti:
-            tot += prodotto.quantita
+        for prodotto in self.prodotti:
+            tot += prodotto.getQuantita()
         return tot
 
 
@@ -33,8 +33,8 @@ class Prenotazione:
         self.cliente = cliente
         self.dataInserimento = datetime.datetime.now()
         self.prodotti = prodotti
-        self.quantitaTotale = self.calcolaQuantita(prodotti)
-        self.importoTotale = self.calcolaImporto()
+        self.quantitaTotale = self.calcolaQuantita(self)
+        self.importoTotale = self.calcolaImporto(self)
 
         prenotazione = {}
         if os.path.isfile('Dati/Prenotazioni.pickle'):
