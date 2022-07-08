@@ -22,7 +22,7 @@ class Cliente(Utilizzatore):
         with open('Dati/Clienti.pickle', 'wb') as f:
             pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
 
-    def ricercaUtilizzatore(self, nome, cognome):
+    def ricercaCliente(self, nome, cognome):
         if os.path.isfile('Dati/Clienti.pickle'):
             with open('Dati/Clienti.pickle', 'rb') as f:
                 clienti = dict(pickle.load(f))
