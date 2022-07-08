@@ -1,7 +1,6 @@
 import pickle
 import os
 
-
 from Attivita.Utilizzatore import Utilizzatore
 
 class Cliente(Utilizzatore):
@@ -12,7 +11,7 @@ class Cliente(Utilizzatore):
         self.tipologia = ""
 
     def aggiungiCliente(self, informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale, codice):
-        self.aggiungiUtilizzatore(nome, telefono, email, cognome, dataNascita, codiceFiscale, codice)
+        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale, codice)
         self.informazioni = informazioni
         self.tipologia = tipologia
         clienti = {}
@@ -23,7 +22,7 @@ class Cliente(Utilizzatore):
         with open('Dati/Clienti.pickle', 'wb') as f:
             pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
 
-    def ricercaUtilizzatore(self, nome, cognome):
+    def ricercaCliente(self, nome, cognome):
         if os.path.isfile('Dati/Clienti.pickle'):
             with open('Dati/Clienti.pickle', 'rb') as f:
                 clienti = dict(pickle.load(f))
@@ -36,9 +35,10 @@ class Cliente(Utilizzatore):
 
     def rimuoviCliente(self):
         if os.path.isfile('Dati/Clienti.pickle'):
-            with open('Dati/Clienti.pickle', 'wb+') as f:
+            with open('Dati/Clienti.pickle', 'rb') as f:
                 clienti = dict(pickle.load(f))
                 del clienti[self.codice]
+            with open('Dati/Clienti.pickle', 'wb') as f:
                 pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
         self.rimuoviUtilizzatore()
         self.informazioni = ""
@@ -46,6 +46,7 @@ class Cliente(Utilizzatore):
         del self
 
     def visualizzaCliente(self):
-        visualizza = self.visualizzaUtilizzatore
-        visualizza += "informazioni: " + self.informazioni + "tipologia: " + self.tipologia
+        visualizza = self.visualizzaUtilizzatore()
+        visualizza["informazioni"] = self.informazioni
+        visualizza["tipologia"] = self.tipologia
         return visualizza 
