@@ -51,7 +51,7 @@ class Ricevuta:
     def visualizzaRicevuta(self):
         if os.path.isfile('Dati\Ricevute.pickle'):
             with open('Dati\Ricevute.pickle', 'rb') as f:
-                ricevuta = dict(pickle.load(f))
+                ricevuta = pickle.load(f)
                 try:
                     return ricevuta[self.codice]
                 except:
@@ -70,8 +70,6 @@ class Ricevuta:
         if os.path.isfile('Dati/Ricevute.pickle'):
             with open('Dati/Ricevute.pickle', 'rb') as file:
                 ricevute = pickle.load(file)
-
         ricevute[codice] = self
-
         with open('Dati/Ricevute.pickle', 'wb') as file:
             pickle.dump(ricevute, file, pickle.HIGHEST_PROTOCOL)

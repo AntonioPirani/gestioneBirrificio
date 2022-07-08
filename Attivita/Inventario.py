@@ -49,7 +49,7 @@ class Inventario:
     def visualizzaInventario(self):
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
-                inventario = dict(pickle.load(f))
+                inventario = pickle.load(f)
                 return inventario
         else:
             return None
