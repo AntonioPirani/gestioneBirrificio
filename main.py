@@ -1,6 +1,6 @@
 from datetime import datetime
 from xmlrpc.client import DateTime
-from Attivita.Dipendente import Dipendente
+from Attivita.Cliente import Cliente
 import datetime
 
 def print_hi(name):
@@ -10,8 +10,10 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    dipendente = Dipendente()
-    #dipendente.aggiungiDipendente("aaaa", "pippo", 33333, "mail", "pluto", datetime.datetime(1989, 10, 20), "sndkv", "1")
-    #print(dipendente.visualizzaDipendente())
-    dipendentesecondo = Dipendente().ricercaUtilizzatore('pippo', 'pluto')
-    print(dipendentesecondo.visualizzaDipendente())
+    cliente = Cliente()
+    cliente.aggiungiCliente("lol", "bello", "pippo", 33333, "mail", "pluto", datetime.datetime(1989, 10, 20), "sndkv", "1")
+    print(cliente.visualizzaCliente())
+    clientesecondo = Cliente().ricercaUtilizzatore('pippo', 'pluto')
+    print(clientesecondo.visualizzaCliente())
+    clientesecondo.rimuoviCliente()
+    print(clientesecondo.visualizzaCliente())
