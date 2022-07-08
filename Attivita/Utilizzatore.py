@@ -42,4 +42,4 @@ class Utilizzatore:
         self.dataNascita = datetime.datetime(year=1970, month=1, day=1)
         self.email = ""
         self.nome = ""
-        self.telefono = 0
+        self.telefono = 0 
