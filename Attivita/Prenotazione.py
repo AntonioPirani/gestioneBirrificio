@@ -65,8 +65,7 @@ class Prenotazione:
                 prenotazione = dict(pickle.load(f))
 
                 self.prodotti = prodotti
-                self.quantitaTotale = self.calcolaQuantita(self)
-                self.importoTotale = self.calcolaImporto(self)
+                self.calcolaTotale()
                 prenotazione[codice] = self
 
         with open('Dati\Prenotazioni.pickle', 'wb') as f:

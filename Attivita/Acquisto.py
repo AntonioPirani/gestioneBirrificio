@@ -56,8 +56,7 @@ class Acquisto:
         self.dataAcquisto = datetime.datetime.now()
 
         self.registraAcquisto(codice)
-        #for prodotto in elencoProdotti:
-        #    self.aggiornaQuantita(prodotto.tipologia, prodotto.quantita)
+        self.aggiornaQuantita()
 
 
     def registraAcquisto(self, codice):
@@ -71,17 +70,15 @@ class Acquisto:
             pickle.dump(acquisto, g, pickle.HIGHEST_PROTOCOL)
 
 
-    def aggiornaQuantita(self, tipologia, quantita):
+    def aggiornaQuantita(self):
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
                 #TODO
-                #for prodotto in inventario.values():
-                #    if prodotto.tipologia == tipologia:
-                #        inventario[quantita] -= quantita
-                #        #inventario.quantita -= quantita
-                inventario[tipologia] -= quantita
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == self.elencoProdotti.tipologia:
+                        inventario.quantita -= self.elencoProdotti.quantita
 
         with open('Dati\Inventario.pickle', 'wb') as f:
             pickle.dump(inventario, f, pickle.HIGHEST_PROTOCOL)
