@@ -7,8 +7,8 @@ class Acquisto:
 
     def __init__(self):
         self.codice = -1
-        self.dataAcquisto = datetime.datetime(1970, 1, 1, 0 , 0)
-        self.elencoProdotti = None
+        self.dataAcquisto = datetime.datetime(1970, 1, 1, 0, 0)
+        self.elencoProdotti = []
         self.quantitaTotale = 0
         self.importoTotale = 0.0
 
@@ -27,18 +27,15 @@ class Acquisto:
             return None
 
 
-    def calcolaImporto(self):
-        tot = 0.0
+    def calcolaTotale(self):
+        iTot = 0.0
+        qTot = 0
         for prodotto in self.elencoProdotti:
-            tot += prodotto.getPrezzoUnitario()
-        self.importoTotale = tot
-
-
-    def calcolaQuantita(self):
-        tot = 0
-        for prodotto in self.elencoProdotti:
-            tot += prodotto.getQuantita()
-        self.quantitaTotale = tot
+            prezzo = self.recuperaPrezzo(prodotto.tipologia)
+            iTot += prezzo * prodotto.quantita
+            qTot += prodotto.quantita
+        self.importoTotale = iTot
+        self.quantitaTotale = qTot
 
 
     def effettuaAcquisto(self, codice, elencoProdotti, codiceP=0): # 0 opzionale
@@ -55,13 +52,11 @@ class Acquisto:
         else:
             return None
 
-        #self.importoTotale()
-        #self.quantitaTotale()
+        self.calcolaTotale()
         self.dataAcquisto = datetime.datetime.now()
 
         self.registraAcquisto(codice)
-        #for prodotto in elencoProdotti:
-        #    self.aggiornaQuantita(prodotto.tipologia, prodotto.quantita)
+        self.aggiornaQuantita()
 
 
     def registraAcquisto(self, codice):
@@ -75,21 +70,27 @@ class Acquisto:
             pickle.dump(acquisto, g, pickle.HIGHEST_PROTOCOL)
 
 
-    def aggiornaQuantita(self, tipologia, quantita):
+    def aggiornaQuantita(self):
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
                 #TODO
-                #for prodotto in inventario.values():
-                #    if prodotto.tipologia == tipologia:
-                #        inventario[quantita] -= quantita
-                #        #inventario.quantita -= quantita
-                inventario[tipologia] -= quantita
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == self.elencoProdotti.tipologia:
+                        inventario.quantita -= self.elencoProdotti.quantita
 
         with open('Dati\Inventario.pickle', 'wb') as f:
             pickle.dump(inventario, f, pickle.HIGHEST_PROTOCOL)
 
+    def recuperaPrezzo(self, tipologia):
+        if os.path.isfile('Dati\Prodotti.pickle'):
+            with open('Dati\Prodotti.pickle', 'rb') as f:
+                inventario = dict(pickle.load(f))
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == tipologia:
+                        return prodotto.prezzoUnitario
+        return 4.8
 
     def __str__(self):
         return f'Acquisto({self.codice}, {self.elencoProdotti}, {self.dataAcquisto}, {self.importoTotale}, {self.quantitaTotale})'
