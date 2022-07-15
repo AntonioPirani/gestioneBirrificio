@@ -39,20 +39,27 @@ class Ricevuta:
         self.Prodotti = Prodotti
 
     # metodo per la ricerca di una ricevuta
-    def ricercaRicevuta(self, num):
+    def ricercaRicevuta(self,num):
         if os.path.isfile('Dati/Ricevute.pickle'):
             with open('Dati/Ricevute.pickle', 'rb') as f:
                 ricevuta = pickle.load(f)
-                return ricevuta[num]
-        else:
-            return None
+                f.close()
+                try:
+                    self = ricevuta[num]
+                    return self
+                except:
+                    return None
+        return None
 
     # metodo per la visualizzazione di una ricevuta
-    def visualizzaRicevuta(self):
+    def visualizzaRicevuta(self,num):
+        self = self.ricercaRicevuta(num)
         if os.path.isfile('Dati\Ricevute.pickle'):
             with open('Dati\Ricevute.pickle', 'rb') as f:
                 ricevuta = pickle.load(f)
+                f.close()
                 try:
+                    print(self)
                     return ricevuta[self.codice]
                 except:
                     return None
@@ -68,8 +75,13 @@ class Ricevuta:
 
         ricevute = {}
         if os.path.isfile('Dati/Ricevute.pickle'):
-            with open('Dati/Ricevute.pickle', 'rb') as file:
-                ricevute = pickle.load(file)
+            with open('Dati/Ricevute.pickle', 'rb') as file_1:
+                ricevute = pickle.load(file_1)
+                file_1.close()
         ricevute[codice] = self
-        with open('Dati/Ricevute.pickle', 'wb') as file:
-            pickle.dump(ricevute, file, pickle.HIGHEST_PROTOCOL)
+        with open('Dati/Ricevute.pickle', 'wb') as file_2:
+            pickle.dump(ricevute, file_2, pickle.HIGHEST_PROTOCOL)
+            file_2.close()
+
+    def __str__(self):
+        return f'Ricevuta({self.codice}, {self.dataEmissione}, {self.importo}, {self.prodotti})'
