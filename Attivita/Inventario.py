@@ -35,8 +35,8 @@ class Inventario:
     #metodo per ricercare un prodotto nell'inventario
 
     def ricercaProdotto(self, nomeProdotto):
-        if os.path.isfile('Dati/Inventario.pickle'):
-            with open('Dati/Inventario.pickle','rb') as f:
+        if os.path.isfile('Dati/InventarioProdotto.pickle'):
+            with open('Dati/InventarioProdotto.pickle','rb') as f:
                 prodotti = pickle.load(f)
                 for prodotto in prodotti.values():
                     if prodotto.nomeProdotto == nomeProdotto:
@@ -47,22 +47,44 @@ class Inventario:
 
     # metodo per la visualizzazione dell'inventario
     def visualizzaInventario(self):
-        if os.path.isfile('Dati\Inventario.pickle'):
-            with open('Dati\Inventario.pickle', 'rb') as f:
+        if os.path.isfile('Dati\InventarioMaterie.pickle'):
+            with open('Dati\InventarioMaterie.pickle', 'rb') as f:
                 inventario = pickle.load(f)
-                return inventario
+                f.close()
+                try:
+                    print(self)
+                    return inventario
+                except:
+                    return None
         else:
             return None
 
     # metodo per aggiornare il magazzino
     def aggiornaMagazzino(self, materiePrime):
         self.materiePrime = materiePrime
+        agg = {}
+        if os.path.isfile('Dati/InventarioMaterie.pickle'):
+            with open('Dati/InventarioMaterie.pickle', 'rb') as file:
+                agg = dict(pickle.load(file))
+                for materia in agg.values():
+                    if materia.nome == materiePrime.nome:
+                        with open('Dati/InventarioMaterie.pickle', 'wb') as file:
+                            materia.quantita = materia.quantita + materiePrime.quantita
+                            app = self
+                            pickle.dump(agg, file, pickle.HIGHEST_PROTOCOL)
+                        return True
 
-        app = {}
-        if os.path.isfile('Dati/Inventario.pickle'):
-            with open('Dati/Inventario.pickle', 'rb') as file:
-                app = pickle.load(file)
+    """def calcolaQuantitaM
+        tot = 0
+        for materia in materiePrime:
+            tot += materia.quantita
+        return tot
 
-        app = self
-        with open('Dati/Inventario.pickle', 'wb') as file:
-            pickle.dump(app, file, pickle.HIGHEST_PROTOCOL)
+    def calcolaQuantitaP
+        tot = 0
+        for prodotto in prodotti:
+            tot += prodotto.quantita
+        return tot"""
+
+    def __str__(self):
+        return f'InventarioMaterie({self.materiePrime})'
