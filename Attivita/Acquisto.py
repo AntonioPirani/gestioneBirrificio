@@ -2,6 +2,8 @@ import datetime
 import os
 import pickle
 
+from Attivita.Ricevuta import Ricevuta
+
 
 class Acquisto:
 
@@ -40,11 +42,15 @@ class Acquisto:
 
     def effettuaAcquisto(self, codice, elencoProdotti, codiceP=0): # 0 opzionale
         self.codice = codice
+        aggiorna = True
 
         if codiceP > 0:
             prenotazione = self.verificaPrenotazione(codiceP)
             if prenotazione is not None:
+                self.codice = codiceP
                 self.elencoProdotti = prenotazione.prodotti
+                aggiorna = False
+                #TODO eliminare prenotazione
             else:
                 print('Nessuna prenotazione trovata')
         elif elencoProdotti is not None:
@@ -55,20 +61,33 @@ class Acquisto:
         self.calcolaTotale()
         self.dataAcquisto = datetime.datetime.now()
 
-        self.registraAcquisto(codice)
-        self.aggiornaQuantita()
+        self.registraAcquisto()
+        if aggiorna:
+            self.aggiornaQuantita()
+        self.rilasciaRicevuta() #TODO
 
 
-    def registraAcquisto(self, codice):
+    def registraAcquisto(self):
         acquisto = {}
         if os.path.isfile('Dati\Acquisti.pickle'):
             with open('Dati\Acquisti.pickle', 'rb') as f:
                 acquisto = pickle.load(f)
 
-        acquisto[codice] = self
+        acquisto[self.codice] = self
         with open('Dati\Acquisti.pickle', 'wb') as g:
             pickle.dump(acquisto, g, pickle.HIGHEST_PROTOCOL)
 
+    def visualizzaAcquisto(self, codice):
+        if os.path.isfile('Dati\Acquisti.pickle'):
+            with open('Dati\Acquisti.pickle', 'rb') as f:
+                acquisti = dict(pickle.load(f))
+                f.close()
+                try:
+                    return acquisti[codice]
+                except:
+                    return None
+        else:
+            return None
 
     def aggiornaQuantita(self):
         if os.path.isfile('Dati\Inventario.pickle'):
@@ -82,6 +101,10 @@ class Acquisto:
 
         with open('Dati\Inventario.pickle', 'wb') as f:
             pickle.dump(inventario, f, pickle.HIGHEST_PROTOCOL)
+
+    def rilasciaRicevuta(self):
+        r = Ricevuta()
+        r.salvaRicevuta(self.codice, self.dataAcquisto, self.importoTotale, self.elencoProdotti)
 
     def recuperaPrezzo(self, tipologia):
         if os.path.isfile('Dati\Prodotti.pickle'):

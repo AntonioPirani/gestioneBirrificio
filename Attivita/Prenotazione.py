@@ -25,6 +25,16 @@ class Prenotazione:
 
 
     def aggiungiPrenotazione(self, codice, cliente, prodotti):
+
+        #TODO
+        # prenotabile = True
+        # for elem in prodotti:
+        #     if self.controllaDisponibilita(elem.tipologia, elem.quantita) and prenotabile:
+        #         #esegui tutto il codice
+        #         print('OK')
+        #     else:
+        #         prenotabile = False
+
         self.codice = codice
         self.cliente = cliente
         self.dataInserimento = datetime.datetime.now()
@@ -42,19 +52,21 @@ class Prenotazione:
             pickle.dump(prenotazione, file, pickle.HIGHEST_PROTOCOL)
 
 
-    def rimuoviPrenotazione(self):
+    def rimuoviPrenotazione(self, codice):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
-            with open('Dati\Prenotazioni.pickle', 'wb+') as f:
-                prenotazioni = pickle.load(f)
-                del prenotazioni[self.codice]
-                pickle.dump(prenotazioni, f, pickle.HIGHEST_PROTOCOL)
+            with open('Dati\Prenotazioni.pickle', 'rb') as f1:
+                prenotazioni = dict(pickle.load(f1))
+                del prenotazioni[codice]
+                f1.close()
+            with open('Dati\Prenotazioni.pickle', 'wb') as f2:
+                pickle.dump(prenotazioni, f2, pickle.HIGHEST_PROTOCOL)
 
             self.codice = 0
             self.cliente = None
             self.confermata = False
             self.dataInserimento = datetime.datetime(1970, 1, 1, 0, 0)
             self.importoTotale = 0.0
-            self.prodotti = None
+            self.prodotti = []
             self.quantitaTotale = 0
             del self
 
@@ -108,6 +120,7 @@ class Prenotazione:
                 prenotazione = dict(pickle.load(f))
                 self.confermata = True
                 prenotazione[self.codice] = self
+                self.riservaQuantita(self.prodotti)
 
         with open('Dati\Prenotazioni.pickle', 'wb') as f:
             pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
@@ -130,6 +143,19 @@ class Prenotazione:
                     if prodotto.tipologia == tipologia:
                         return prodotto.prezzoUnitario
         return 4.8
+
+    def riservaQuantita(self, prodotti):
+        if os.path.isfile('Dati\Inventario.pickle'):
+            with open('Dati\Inventario.pickle', 'rb') as f:
+                inventario = dict(pickle.load(f))
+
+                #TODO
+                for prodotto in inventario.values():
+                    if prodotto.tipologia == prodotti.tipologia:
+                        inventario.quantita -= prodotti.quantita
+
+        with open('Dati\Inventario.pickle', 'wb') as f:
+            pickle.dump(inventario, f, pickle.HIGHEST_PROTOCOL)
 
     def __str__(self):
         return f'Prenotazione({self.codice}, {self.cliente}, {self.prodotti}, {self.dataInserimento}, {self.importoTotale}, {self.quantitaTotale}, {self.confermata})'
