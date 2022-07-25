@@ -19,7 +19,7 @@ class VistaHome(QWidget):
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 2)
         self.layout.addWidget(self.getButton('Area Riservata', self.selezionaAreaRiservata), 1, 0)
-        self.layout.addWidget(self.getButton('Area Clienti', self.selezionaAreaRiservata), 1, 1)
+        self.layout.addWidget(self.getButton('Area Clienti', self.selezionaAreaCliente), 1, 1)
 
         self.resize(400, 300)
         self.setWindowTitle("Gestore Birrificio")
@@ -45,6 +45,9 @@ class VistaHome(QWidget):
             msgBox.setText('Errore inserimento password')
             msgBox.exec();
         pass
+
+    def selezionaAreaCliente(self):
+        print('Benvenuto!')
 
 
 class CustomDialog(QDialog):
