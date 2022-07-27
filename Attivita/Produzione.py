@@ -16,15 +16,18 @@ class Produzione:
         self.temperatura = -1.0
         self.composto =""
 
-
     def inizioLavorazione(self, codiceProduzione):
         self.codiceProduzione = codiceProduzione
         self.note = ""
         self.dataInizio = datetime.date.today()
-        self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un mese dall'inizio (necessita di scaricarsi il pacchetto dateutil)
+        self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un giorno dall'inizio (necessita di scaricarsi il pacchetto dateutil)
         self.livello=1;
         self.temperatura=18.0
         self.composto = "Composto"+str(codiceProduzione)
+        #aggiungimaterie
+        #aggiorna
+        #aggiungo prodotto
+        #aggiorna prodotto
         produzioni = {}
         if os.path.isfile('Dati/Produzioni.pickle'):
             with open('Dati/Produzioni.pickle', 'rb') as f:
@@ -74,12 +77,12 @@ class Produzione:
         while dataInizio <= dataFine:
             #print("Controllo alle ore: "+dataInizio.strftime("%H")+" alla data "+dataInizio.strftime("%Y-%m-%d"))
             dataInizio = dataInizio + pd.DateOffset(hours=4)
-            if temperatura > 100 or livello < 2 or composto!="Composto"+str(codiceProduzione): #i numeri sono a caso
+            #if temperatura > 100 or livello < 2 or composto!="Composto"+str(codiceProduzione): #i numeri sono a caso
                 #self.segnalaAnomalia(codiceProduzione)
-                print("SEGNALATA ANOMALIA, ")
-                temperatura = 50
-                livello = 3
-                composto = "Composto" + str(codiceProduzione)
+                #print("SEGNALATA ANOMALIA ")
+                #temperatura = 50
+                #livello = 3
+                #composto = "Composto" + str(codiceProduzione)
 
     def segnalaAnomalia(self, codiceProduzione): #non funziona
         print("SEGNALATA ANOMALIA, ")
@@ -87,16 +90,8 @@ class Produzione:
         self.livello = 3
         self.composto="Composto"+str(codiceProduzione)
 
-    def registraProdotto(self, codiceProduzione, dataInizio, dataFine, livello, materieUtilizzate, note, prodotto, temperatura, composto):
+    def registraProdotto(self, codiceProduzione):
         self.codiceProduzione = codiceProduzione
-        self.dataInizio = dataInizio
-        self.dataFine = dataFine
-        self.livello = livello
-        self.materieUtilizzate = materieUtilizzate
-        self.note = note
-        self.prodotto = prodotto
-        self.temperatura = temperatura
-        self.composto = composto
         prodotti = {}
         if os.path.isfile('Dati/Inventario.pickle'):
             with open('Dati/Inventario.pickle', 'rb') as f:
@@ -105,13 +100,22 @@ class Produzione:
         with open('Dati/Inventario.pickle', 'wb') as f:
             pickle.dump(prodotti, f, pickle.HIGHEST_PROTOCOL)
 
+    def aggiornaMagazzinoProduzione(self, materiePrime):
+        self.materiePrime = materiePrime
+        inventario_m = {}
+        if os.path.isfile('Dati/Inventario.pickle'):
+            with open('Dati/Inventario.pickle', 'rb') as file:
+                inventario_m = dict(pickle.load(file))
 
+        for materia in inventario_m.values():
+            if materia.nome == materiePrime.nome :
+                if materia.quantita - materiePrime.quantita >=0:
+                    self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                else:
+                    return False
 
+        inventario_m[materiePrime.nome] = self.materiePrime
 
-
-    #def aggiornaMagazzino(self, string, temperatura):
-
-
-
-
-
+        with open('Dati/Inventario.pickle', 'wb') as file:
+            pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
+        print(inventario_m)
