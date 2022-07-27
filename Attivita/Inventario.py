@@ -68,10 +68,11 @@ class Inventario:
                 inventario_m = dict(pickle.load(file))
 
         for materia in inventario_m.values():
-            if materia.materiePrime.nome == materiePrime.nome:
+            #materia.materiePrime.nome
+            if materia.nome == materiePrime.nome:
                 #aggiungere un elemento alla volta quando si richiama il metodo
-                self.materiePrime.quantita = materia.materiePrime.quantita + materiePrime.quantita
-        inventario_m[materiePrime.nome] = self
+                self.materiePrime.quantita = materia.quantita + materiePrime.quantita
+        inventario_m[materiePrime.nome] = self.materiePrime
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
