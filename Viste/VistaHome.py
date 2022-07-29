@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
 
+from Viste.VistaAreaRiservata import VistaAreaRiservata
+
 
 class VistaHome(QWidget):
 
@@ -9,7 +11,7 @@ class VistaHome(QWidget):
         super(VistaHome, self).__init__(parent)
 
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
-            #TODO provare cosi lo stile
+
         self.label = QLabel("Gestione Birrificio", self)
         self.label.setStyleSheet('font: 87 20pt "Arial Black";color: rgb(255, 255, 127);'
                                  'background-color: rgba(255, 153, 0);')
@@ -37,9 +39,10 @@ class VistaHome(QWidget):
     def selezionaAreaRiservata(self):
         dlg = CustomDialog(self)
         if dlg.exec() and dlg.qLine.text() == 'birra':
-            # self.vistaAreaRiservata = VistaAreaRiservata()
-            # self.vistaAreaRiservata.show()
-            print(dlg.qLine.text())
+            self.vistaAreaRiservata = VistaAreaRiservata()
+            self.vistaAreaRiservata.show()
+            self.close()
+            #print(dlg.qLine.text())
         else:
             msgBox = QMessageBox()
             msgBox.setText('Errore inserimento password')
