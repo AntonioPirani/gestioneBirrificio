@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
 
+from Viste.VistaAreaCliente import VistaAreaCliente
 from Viste.VistaAreaRiservata import VistaAreaRiservata
 
 
@@ -50,8 +51,9 @@ class VistaHome(QWidget):
         pass
 
     def selezionaAreaCliente(self):
-        print('Benvenuto!')
-
+        self.vistaAreaCliente = VistaAreaCliente()
+        self.vistaAreaCliente.show()
+        self.close()
 
 class CustomDialog(QDialog):
     def __init__(self, parent=None):

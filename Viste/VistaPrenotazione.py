@@ -1,25 +1,24 @@
-from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
-    QDialog, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel
 from PyQt5 import QtCore
 
 
-class VistaAreaRiservata(QWidget):
+class VistaPrenotazione(QWidget):
 
     def __init__(self, parent=None):
-        super(VistaAreaRiservata, self).__init__(parent)
+        super(VistaPrenotazione, self).__init__(parent)
 
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
-        self.label = QLabel("Area Riservata", self)
+        self.label = QLabel("Area Prenotazione", self)
         self.label.setStyleSheet('font: 87 20pt "Arial Black";color: rgb(255, 255, 127);'
                                  'background-color: rgba(255, 153, 0);')
         self.label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 3)
-        self.layout.addWidget(self.getButton('Effettua\nAcquisto', self.effettuaAcquisto), 1, 0)
-        self.layout.addWidget(self.getButton('Aggiungi\nMaterie\nPrime', self.aggiungiMaterie), 1, 1)
-        self.layout.addWidget(self.getButton('Inizia\nProduzione', self.iniziaProduzione), 1, 2)
+        self.layout.addWidget(self.getButton('Nuova\nPrenotazione', self.inserisciPrenotazione), 1, 0)
+        self.layout.addWidget(self.getButton('Modifica\nPrenotazione\nEsistente', self.modificaPrenotazione), 1, 1)
+        self.layout.addWidget(self.getButton('Elimina\nPrenotazione', self.eliminaPrenotazione), 1, 2)
 
         self.resize(400, 300)
         self.setWindowTitle("Gestore Birrificio")
@@ -34,11 +33,11 @@ class VistaAreaRiservata(QWidget):
         button.clicked.connect(on_click)
         return button
 
-    def effettuaAcquisto(self):
-        print('Acquisto')
+    def inserisciPrenotazione(self):
+        print('Inserimento')
 
-    def aggiungiMaterie(self):
-        print('Materia')
+    def modificaPrenotazione(self):
+        print('Modifica')
 
-    def iniziaProduzione(self):
-        print('Produzione')
+    def eliminaPrenotazione(self):
+        print('Eliminazione')

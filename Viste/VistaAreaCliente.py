@@ -2,24 +2,25 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
 
+from Viste.VistaPrenotazione import VistaPrenotazione
 
-class VistaAreaRiservata(QWidget):
+
+class VistaAreaCliente(QWidget):
 
     def __init__(self, parent=None):
-        super(VistaAreaRiservata, self).__init__(parent)
+        super(VistaAreaCliente, self).__init__(parent)
 
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
-        self.label = QLabel("Area Riservata", self)
+        self.label = QLabel("Area Cliente", self)
         self.label.setStyleSheet('font: 87 20pt "Arial Black";color: rgb(255, 255, 127);'
                                  'background-color: rgba(255, 153, 0);')
         self.label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.layout = QGridLayout()
-        self.layout.addWidget(self.label, 0, 0, 1, 3)
-        self.layout.addWidget(self.getButton('Effettua\nAcquisto', self.effettuaAcquisto), 1, 0)
-        self.layout.addWidget(self.getButton('Aggiungi\nMaterie\nPrime', self.aggiungiMaterie), 1, 1)
-        self.layout.addWidget(self.getButton('Inizia\nProduzione', self.iniziaProduzione), 1, 2)
+        self.layout.addWidget(self.label, 0, 0, 1, 2)
+        self.layout.addWidget(self.getButton('Registrazione', self.registrazione), 1, 0)
+        self.layout.addWidget(self.getButton('Gestione\nPrenotazione', self.gestionePrenotazione), 1, 1)
 
         self.resize(400, 300)
         self.setWindowTitle("Gestore Birrificio")
@@ -34,11 +35,10 @@ class VistaAreaRiservata(QWidget):
         button.clicked.connect(on_click)
         return button
 
-    def effettuaAcquisto(self):
-        print('Acquisto')
+    def registrazione(self):
+        print('Inserisci cliente')
 
-    def aggiungiMaterie(self):
-        print('Materia')
-
-    def iniziaProduzione(self):
-        print('Produzione')
+    def gestionePrenotazione(self):
+        self.vistaPrenotazione = VistaPrenotazione()
+        self.vistaPrenotazione.show()
+        self.close()
