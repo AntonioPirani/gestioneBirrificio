@@ -61,6 +61,12 @@ class Inventario:
 
     # metodo per aggiornare il magazzino
     def aggiornaMagazzino(self, materiePrime):
+        # for materia in inventario_m.values():
+        #     #materia.materiePrime.nome
+        #     if materia.nome == materiePrime.nome:
+        #         #aggiungere un elemento alla volta quando si richiama il metodo
+        #         self.materiePrime.quantita = materia.quantita + materiePrime.quantita
+
         self.materiePrime = materiePrime
         inventario_m = {}
         if os.path.isfile('Dati/Inventario.pickle'):
@@ -68,10 +74,17 @@ class Inventario:
                 inventario_m = dict(pickle.load(file))
 
         for materia in inventario_m.values():
-            #materia.materiePrime.nome
-            if materia.nome == materiePrime.nome:
-                #aggiungere un elemento alla volta quando si richiama il metodo
-                self.materiePrime.quantita = materia.quantita + materiePrime.quantita
+            try:
+                if materia.nome == materiePrime.nome:
+                    self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+            except:
+                try:
+                    if materia.tipologia == materiePrime.nome:
+                        self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                except:
+                    print('AttributeError')
+                    return False
+
         inventario_m[materiePrime.nome] = self.materiePrime
 
         with open('Dati/Inventario.pickle', 'wb') as file:

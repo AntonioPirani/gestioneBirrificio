@@ -10,13 +10,13 @@ class Produzione:
         self.dataInizio = datetime.datetime(1970, 1, 1, 0, 0)
         self.dataFine = datetime.datetime(1970, 1, 1, 0, 0)
         self.livello = -1
-        self.materieUtilizzate = None
+        self.materieRimosse = None
         self.note = ""
         self.prodotto = None
         self.temperatura = -1.0
         self.composto =""
 
-    def inizioLavorazione(self, codiceProduzione, Materia, Prodotto):
+    def inizioLavorazione(self, codiceProduzione, materia, prodotto):
         self.codiceProduzione = codiceProduzione
         self.note = ""
         self.dataInizio = datetime.date.today()
@@ -25,10 +25,10 @@ class Produzione:
         self.temperatura=18.0
         self.composto = "Composto"+str(codiceProduzione)
 
-        self.materieUtilizzate = Materia.aggiungiMateria(10, "descr", "3n", "Monaco", 1, datetime.datetime(2022, 7, 30)) #aggiungimaterie
+        self.materieRimosse = materia
         self.aggiornaMagazzinoMaterie(self.materieUtilizzate) #rimovi materie utilizzate
 
-        self.prodotto = Prodotto.aggiungiProdotto("Monaco", 20) #aggiungo prodotto
+        self.prodotto = prodotto
         self.registraProdotto(codiceProduzione) #registro prodotto
         self.aggiornaMagazzinoProdotti(self.prodotto)#aggiorna prodotto
 
@@ -48,7 +48,7 @@ class Produzione:
             "dataFine": self.dataFine,
             "livello": self.livello,
             "temperatura": self.temperatura,
-            "comnposto": self.composto,
+            "composto": self.composto,
         }
 
     def ricercaProduzione(self, codiceProduzione):
@@ -70,7 +70,7 @@ class Produzione:
                 self.dataInizio = datetime.datetime(1970, 1, 1, 0, 0)
                 self.dataFine = datetime.datetime(1970, 1, 1, 0, 0)
                 self.livello = -1
-                self.materieUtilizzate = None
+                self.materieRimosse = None
                 self.note = ""
                 self.prodotto = None
                 self.temperatura = -1.0
@@ -90,7 +90,7 @@ class Produzione:
 
     def segnalaAnomalia(self, codiceProduzione):
         print("SEGNALATA ANOMALIA ")
-        self.setTemeperatura(20)
+        self.setTemperatura(20)
         self.setLivello(3)
         self.setComposto("Composto" + str(codiceProduzione))
 
@@ -114,13 +114,18 @@ class Produzione:
                 inventario_m = dict(pickle.load(file))
 
         for materia in inventario_m.values():
-            if materia.nome == materieRimosse.nome :
-                if materia.quantita - materieRimosse.quantita >=0:
-                    self.materiePrime.quantita = materia.quantita - materieRimosse.quantita
-                else:
+            try:
+                if materia.nome == materieRimosse.nome:
+                    self.materieRimosse.quantita = materia.quantita - materieRimosse.quantita
+            except:
+                try:
+                    if materia.tipologia == materieRimosse.nome:
+                        self.materieRimosse.quantita = materia.quantita - materieRimosse.quantita
+                except:
+                    print('AttributeError')
                     return False
 
-        inventario_m[materieRimosse.nome] = self.materieUtilizzate
+        inventario_m[materieRimosse.nome] = self.materieRimosse
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
@@ -134,19 +139,27 @@ class Produzione:
                 inventario_m = dict(pickle.load(file))
 
         for prodotto in inventario_m.values():
-            if prodotto.tipologia == prodottoAggiunto.tipologia:
-                # aggiungere un elemento alla volta quando si richiama il metodo
-                self.prodottoAggiunto.quantita = prodotto.quantita + prodottoAggiunto.quantita
+            try:
+                if prodotto.tipologia == prodottoAggiunto.tipologia:
+                    self.prodottoAggiunto.quantita = prodotto.quantita + prodottoAggiunto.quantita
+            except:
+                try:
+                    if prodotto.nome == prodottoAggiunto.tipologia:
+                        self.prodottoAggiunto.quantita = prodotto.quantita + prodottoAggiunto.quantita
+                except:
+                    print('AttributeError')
+                    return False
+
         inventario_m[prodottoAggiunto.tipologia] = self.prodottoAggiunto
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
         print(inventario_m)
 
-    def getTemepratura(self):
-        return self.temepratura
-    def setTemeperatura(self,temperatura):
-        self.temepratura = temperatura
+    def getTemperatura(self):
+        return self.temperatura
+    def setTemperatura(self, temperatura):
+        self.temperatura = temperatura
 
     def getLivello(self):
         return self.livello

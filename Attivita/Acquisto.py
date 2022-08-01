@@ -1,8 +1,10 @@
 import datetime
 import os
 import pickle
+from collections.abc import Iterable
 
 from Attivita.Ricevuta import Ricevuta
+from Attivita.Prenotazione import Prenotazione
 
 
 class Acquisto:
@@ -32,10 +34,14 @@ class Acquisto:
     def calcolaTotale(self):
         iTot = 0.0
         qTot = 0
-        for prodotto in self.elencoProdotti:
-            prezzo = self.recuperaPrezzo(prodotto.tipologia)
-            iTot += prezzo * prodotto.quantita
-            qTot += prodotto.quantita
+        if isinstance(self.elencoProdotti, Iterable):
+            for prodotto in self.elencoProdotti:
+                prezzo = self.recuperaPrezzo(prodotto.tipologia)
+                iTot += prezzo * prodotto.quantita
+                qTot += prodotto.quantita
+        else:
+            iTot = self.recuperaPrezzo(self.elencoProdotti.tipologia)
+            qTot = self.elencoProdotti.quantita
         self.importoTotale = iTot
         self.quantitaTotale = qTot
 
@@ -50,21 +56,27 @@ class Acquisto:
                 self.codice = codiceP
                 self.elencoProdotti = prenotazione.prodotti
                 aggiorna = False
-                #TODO eliminare prenotazione
+                p = Prenotazione()
+                p.rimuoviPrenotazione(codiceP)
             else:
                 print('Nessuna prenotazione trovata')
         elif elencoProdotti is not None:
             self.elencoProdotti = elencoProdotti
         else:
-            return None
+            return False
 
         self.calcolaTotale()
         self.dataAcquisto = datetime.datetime.now()
 
         self.registraAcquisto()
         if aggiorna:
-            self.aggiornaQuantita()
-        self.rilasciaRicevuta() #TODO
+            if isinstance(self.elencoProdotti, Iterable):
+                for prodotto in self.elencoProdotti:
+                    self.aggiornaQuantita(prodotto)
+            else:
+                self.aggiornaQuantita(self.elencoProdotti)
+        self.rilasciaRicevuta()
+        return True
 
 
     def registraAcquisto(self):
@@ -89,18 +101,29 @@ class Acquisto:
         else:
             return None
 
-    def aggiornaQuantita(self):
+
+    def aggiornaQuantita(self, elem):
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
-                #TODO
-                for prodotto in inventario.values():
-                    if prodotto.tipologia == self.elencoProdotti.tipologia:
-                        inventario.quantita -= self.elencoProdotti.quantita
+        for prodotto in inventario.values():
+            try:
+                if prodotto.tipologia == elem.tipologia:
+                    elem.quantita = prodotto.quantita - elem.quantita
+            except:
+                try:
+                    if prodotto.nome == elem.tipologia:
+                        elem.quantita = prodotto.quantita - elem.quantita
+                except:
+                    print('AttributeError')
+                    return False
 
-        with open('Dati\Inventario.pickle', 'wb') as f:
-            pickle.dump(inventario, f, pickle.HIGHEST_PROTOCOL)
+        inventario[elem.tipologia] = elem
+
+        with open('Dati/Inventario.pickle', 'wb') as file:
+            pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
+
 
     def rilasciaRicevuta(self):
         r = Ricevuta()
@@ -114,6 +137,7 @@ class Acquisto:
                     if prodotto.tipologia == tipologia:
                         return prodotto.prezzoUnitario
         return 4.8
+
 
     def __str__(self):
         return f'Acquisto({self.codice}, {self.elencoProdotti}, {self.dataAcquisto}, {self.importoTotale}, {self.quantitaTotale})'
