@@ -9,14 +9,14 @@ class Dipendente(Utilizzatore):
         super().__init__()
         self.indirizzo = ""
 
-    def aggiungiDipendente(self, indirizzo, nome, telefono, email, cognome, dataNascita, codiceFiscale, codice):
-        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale, codice)
+    def aggiungiDipendente(self, indirizzo, nome, telefono, email, cognome, dataNascita, codiceFiscale): #codice
+        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale) #codice
         self.indirizzo = indirizzo
         dipendenti = {}
         if os.path.isfile('Dati/Dipendenti.pickle'):
             with open('Dati/Dipendenti.pickle', 'rb') as f:
                 dipendenti = pickle.load(f)
-        dipendenti[codice] = self
+        dipendenti[codiceFiscale] = self
         with open('Dati/Dipendenti.pickle', 'wb') as f:
             pickle.dump(dipendenti, f, pickle.HIGHEST_PROTOCOL)
 
@@ -35,7 +35,7 @@ class Dipendente(Utilizzatore):
         if os.path.isfile('Dati/Dipendenti.pickle'):
             with open('Dati/Dipendenti.pickle', 'rb') as f:
                 dipendenti = dict(pickle.load(f))
-                del dipendenti[self.codice]
+                del dipendenti[self.codiceFiscale]
             with open('Dati/Dipendenti.pickle', 'wb') as f:
                 pickle.dump(dipendenti, f, pickle.HIGHEST_PROTOCOL)
         self.rimuoviUtilizzatore()
