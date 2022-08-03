@@ -10,15 +10,16 @@ class Cliente(Utilizzatore):
         self.informazioni = ""
         self.tipologia = ""
 
-    def aggiungiCliente(self, informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale, codice):
-        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale, codice)
+    def aggiungiCliente(self, informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale): #codice
+        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale) #codice
         self.informazioni = informazioni
         self.tipologia = tipologia
         clienti = {}
         if os.path.isfile('Dati/Clienti.pickle'):
             with open('Dati/Clienti.pickle', 'rb') as f:
                 clienti = pickle.load(f)
-        clienti[codice] = self
+        #clienti[codice] = self
+        clienti[codiceFiscale] = self
         with open('Dati/Clienti.pickle', 'wb') as f:
             pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
 
@@ -37,7 +38,7 @@ class Cliente(Utilizzatore):
         if os.path.isfile('Dati/Clienti.pickle'):
             with open('Dati/Clienti.pickle', 'rb') as f:
                 clienti = dict(pickle.load(f))
-                del clienti[self.codice]
+                del clienti[self.codiceFiscale]
             with open('Dati/Clienti.pickle', 'wb') as f:
                 pickle.dump(clienti, f, pickle.HIGHEST_PROTOCOL)
         self.rimuoviUtilizzatore()

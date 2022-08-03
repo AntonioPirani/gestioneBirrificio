@@ -4,7 +4,7 @@ from abc import abstractmethod
 class Utilizzatore:
 
     def __init__(self):
-        self.codice = ""
+        #self.codice = ""
         self.codiceFiscale = ""
         self.cognome = ""
         self.dataNascita = datetime.datetime(year=1970, month=1, day=1)
@@ -12,14 +12,14 @@ class Utilizzatore:
         self.nome = ""
         self.telefono = 0
 
-    def aggiungiUtilizzatore(self, telefono, nome, email, dataNascita, cognome, codiceFiscale, codice):
+    def aggiungiUtilizzatore(self, telefono, nome, email, dataNascita, cognome, codiceFiscale): #codice
         self.codiceFiscale = codiceFiscale
         self.cognome = cognome
         self.dataNascita = dataNascita
         self.email = email
         self.nome = nome
         self.telefono = telefono
-        self.codice = codice
+        #self.codice = codice
 
     @abstractmethod
     def ricercaUtilizzatore(self, nome, cognome):
@@ -36,7 +36,7 @@ class Utilizzatore:
         }
 
     def rimuoviUtilizzatore(self):
-        self.codice = -1
+        #self.codice = -1
         self.codiceFiscale = ""
         self.cognome = ""
         self.dataNascita = datetime.datetime(year=1970, month=1, day=1)
