@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
 from PyQt5 import QtCore
 
 from Viste.VistaAreaProduzione import VistaAreaProduzione
+from Viste.VistaGestisciAcquisto import VistaGestisciAcquisto
+
 
 class VistaAreaRiservata(QWidget):
 
@@ -19,7 +21,7 @@ class VistaAreaRiservata(QWidget):
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 3)
         self.layout.addWidget(self.getButton('Effettua\nAcquisto', self.effettuaAcquisto), 1, 0)
-        self.layout.addWidget(self.getButton('Aggiungi\nMaterie\nPrime', self.aggiungiMaterie), 1, 1)
+        self.layout.addWidget(self.getButton('Aggiungi\nMaterie\nPrime', self.visualizzaInventario), 1, 1)
         self.layout.addWidget(self.getButton('Inizia\nProduzione', self.iniziaProduzione), 1, 2)
 
         self.resize(400, 300)
@@ -36,12 +38,12 @@ class VistaAreaRiservata(QWidget):
         return button
 
     def effettuaAcquisto(self):
-        print('Acquisto')
+        self.vistaGestisciAcquisto = VistaGestisciAcquisto()
+        self.vistaGestisciAcquisto.show()
 
-    def aggiungiMaterie(self):
-        print('Materia')
+    def visualizzaInventario(self):
+        print('Inventario')
 
     def iniziaProduzione(self):
         self.vistaAreaProduzione = VistaAreaProduzione()
         self.vistaAreaProduzione.show()
-        self.close()

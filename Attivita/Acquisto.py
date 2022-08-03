@@ -101,6 +101,14 @@ class Acquisto:
         else:
             return None
 
+    def ricercaAcquisto(self, codice):
+        if os.path.isfile('Dati/Acquisti.pickle'):
+            with open('Dati/Acquisti.pickle', 'rb') as f:
+                acquisti = dict(pickle.load(f))
+                return acquisti.get(codice, None)
+        else:
+            return None
+
 
     def aggiornaQuantita(self, elem):
         if os.path.isfile('Dati\Inventario.pickle'):
@@ -137,6 +145,15 @@ class Acquisto:
                     if prodotto.tipologia == tipologia:
                         return prodotto.prezzoUnitario
         return 4.8
+
+    def getInfoAcquisto(self):
+        return {
+            "codice": self.codice,
+            "dataAcquisto": self.dataAcquisto,
+            "importoTotale": self.importoTotale,
+            "quantitaTotale": self.quantitaTotale,
+            "elencoProdotti": self.elencoProdotti,
+        }
 
 
     def __str__(self):
