@@ -48,7 +48,7 @@ class Prenotazione:
         if prenotabile:
             self.codice = codice
             self.cliente = cliente
-            self.dataInserimento = datetime.datetime.now()
+            self.dataInserimento = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.prodotti = prodotti
             self.calcolaTotale()
 

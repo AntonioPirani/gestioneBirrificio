@@ -21,7 +21,7 @@ class VistaAreaRiservata(QWidget):
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 3)
         self.layout.addWidget(self.getButton('Effettua\nAcquisto', self.effettuaAcquisto), 1, 0)
-        self.layout.addWidget(self.getButton('Aggiungi\nMaterie\nPrime', self.visualizzaInventario), 1, 1)
+        self.layout.addWidget(self.getButton('Visualizza\nInventario', self.visualizzaInventario), 1, 1)
         self.layout.addWidget(self.getButton('Inizia\nProduzione', self.iniziaProduzione), 1, 2)
 
         self.resize(400, 300)

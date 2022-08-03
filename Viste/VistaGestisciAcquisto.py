@@ -42,15 +42,11 @@ class VistaGestisciAcquisto(QWidget):
     def mostraInformazioni(self):
         try:
             selected = self.listView.selectedIndexes()[0].data()
-            print(selected)
             tipo = selected.split()[7]
-            print(tipo)
             codice = int(selected.split()[9])
-            print(codice)
             acquisto = None
             if tipo == "Acquisto":
                 acquisto = Acquisto().ricercaAcquisto(codice)
-                print(acquisto)
             self.vistaAcquisto = VistaAcquisto(acquisto, eliminaCallback=self.updateUI)
             self.vistaAcquisto.show()
         except IndexError:

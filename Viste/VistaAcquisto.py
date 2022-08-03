@@ -26,7 +26,7 @@ class VistaAcquisto(QWidget):
 
         layoutVert.addItem(QSpacerItem(10, 10, QSizePolicy.Minimum, QSizePolicy.Expanding))
         layoutVert.addWidget(QLabel(f"Data Acquisto: {info['dataAcquisto']}"))
-        layoutVert.addWidget(QLabel(f"Importo Totale: {info['importoTotale']}"))
+        layoutVert.addWidget(QLabel(f"Importo Totale: {info['importoTotale']} €"))
         layoutVert.addWidget(QLabel(f"Quantità Totale: {info['quantitaTotale']}"))
 
         layoutVert.addWidget(QLabel(f"Elenco Prodotti: "))

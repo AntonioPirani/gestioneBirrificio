@@ -66,7 +66,7 @@ class Acquisto:
             return False
 
         self.calcolaTotale()
-        self.dataAcquisto = datetime.datetime.now()
+        self.dataAcquisto = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         self.registraAcquisto()
         if aggiorna:
