@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
+from Viste.VistaClienti import VistaClienti
 
 from Viste.VistaPrenotazione import VistaPrenotazione
 
@@ -36,7 +37,9 @@ class VistaAreaCliente(QWidget):
         return button
 
     def registrazione(self):
-        print('Inserisci cliente')
+        self.vistaRegistrazione = VistaClienti()
+        self.vistaRegistrazione.show()
+        self.close()
 
     def gestionePrenotazione(self):
         self.vistaPrenotazione = VistaPrenotazione()
