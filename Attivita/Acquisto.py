@@ -60,23 +60,40 @@ class Acquisto:
                 p.rimuoviPrenotazione(codiceP)
             else:
                 print('Nessuna prenotazione trovata')
+                return False
         elif elencoProdotti is not None:
             self.elencoProdotti = elencoProdotti
         else:
             return False
 
-        self.calcolaTotale()
-        self.dataAcquisto = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        self.registraAcquisto()
-        if aggiorna:
-            if isinstance(self.elencoProdotti, Iterable):
-                for prodotto in self.elencoProdotti:
-                    self.aggiornaQuantita(prodotto)
+        acquistabile = True
+        if isinstance(elencoProdotti, Iterable):
+            for elem in elencoProdotti:
+                if self.controllaDisponibilita(elem.tipologia, elem.quantita) and acquistabile:
+                    acquistabile = True
+                else:
+                    acquistabile = False
+        else:
+            if self.controllaDisponibilita(elencoProdotti.tipologia, elencoProdotti.quantita):
+                acquistabile = True
             else:
-                self.aggiornaQuantita(self.elencoProdotti)
-        self.rilasciaRicevuta()
-        return True
+                acquistabile = False
+
+        if acquistabile:
+            self.calcolaTotale()
+            self.dataAcquisto = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            self.registraAcquisto()
+            if aggiorna:
+                if isinstance(self.elencoProdotti, Iterable):
+                    for prodotto in self.elencoProdotti:
+                        self.aggiornaQuantita(prodotto)
+                else:
+                    self.aggiornaQuantita(self.elencoProdotti)
+            self.rilasciaRicevuta()
+            return True
+        else:
+            return False
 
 
     def registraAcquisto(self):
@@ -131,6 +148,26 @@ class Acquisto:
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
+
+
+    def controllaDisponibilita(self, tipologia, quantita):
+        ok = False
+        if os.path.isfile('Dati\Inventario.pickle'):
+            with open('Dati\Inventario.pickle', 'rb') as file0:
+                inventario = dict(pickle.load(file0))
+                for prodotto in inventario.values():
+                    try:
+                        if prodotto.tipologia == tipologia and prodotto.quantita > quantita:
+                            ok = True
+                    except:
+                        try:
+                            if prodotto.nome == tipologia and prodotto.quantita > quantita:
+                                ok = True
+                        except:
+                            print('AttributeError')
+                            ok = False
+        file0.close()
+        return ok
 
 
     def rilasciaRicevuta(self):
