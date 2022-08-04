@@ -92,9 +92,21 @@ class VistaEffettuaAcquisto(QWidget):
             #print(elenco)   # prima scelta
 
             n = random.randint(1, sys.maxsize)
-            acquisto.effettuaAcquisto(n, elenco) #acquisto.effettuaAcquisto(1, self.carrello.values())
+            a = acquisto.effettuaAcquisto(n, elenco) #acquisto.effettuaAcquisto(1, self.carrello.values())
+            if not a:
+                QMessageBox.critical(self, 'Errore', 'Acquisto non andato a buon fine', QMessageBox.Ok, QMessageBox.Ok)
+            else:
+                self.msgBox(acquisto.importoTotale)
+
             self.callback()
             self.close()
+
+    def msgBox(self, importo):
+        msg = QMessageBox()
+        msg.setWindowTitle('Successo')
+        msg.setText("Importo da pagare: %s €" %importo)
+        msg.setIcon(1)
+        msg.exec()
 
 class MyCustomWidget(QWidget):
     def __init__(self, parent=None):
