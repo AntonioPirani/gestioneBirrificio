@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
 
+from Viste.VistaInizioLavorazione import VistaInizioLavorazione
+
 class VistaAreaProduzione(QWidget):
 
     def __init__(self, parent=None):
@@ -33,7 +35,10 @@ class VistaAreaProduzione(QWidget):
         return button
 
     def materieUtilizzate(self):
-        print('Insersci le materei che vuoi impiegare')
+        self.vistaLavorazione = VistaInizioLavorazione()
+        self.vistaLavorazione.show()
+        self.close()
+        #print('Inserisci le materie che vuoi impiegare')
 
     def dati(self):
         print('Visualizza dati della produzione')
