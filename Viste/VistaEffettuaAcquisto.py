@@ -2,8 +2,9 @@ import random
 import sys
 from copy import deepcopy
 
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QHBoxLayout, QPushButton, QComboBox, QSpinBox, QListWidget, \
-    QListWidgetItem, QSizePolicy, QMessageBox
+    QListWidgetItem, QSizePolicy, QMessageBox, QLineEdit
 
 from Attivita.Acquisto import Acquisto
 from Servizio.Bottiglia import Bottiglia
@@ -11,17 +12,24 @@ from Servizio.Bottiglia import Bottiglia
 
 class VistaEffettuaAcquisto(QWidget):
 
-    #TODO
-    # controllo codice prenotazione
-    # controllo disponibilita magazzino
-
     def __init__(self, callback):
         super(VistaEffettuaAcquisto, self).__init__()
         self.callback = callback
+        self.setFont(QFont('Arial', 10))
         self.setWindowTitle('Effettua Acquisto')
         self.massimo = 0
 
+        self.boxPrenotazione = QHBoxLayout()
+        self.labelPrenotazione = QLabel()
+        self.labelPrenotazione.setText('Codice Prenotazione:')
+        self.inserimentoPrenotazione = QLineEdit()
+        self.inserimentoPrenotazione.setToolTip('Valori ammessi: 0-9')
+        self.inserimentoPrenotazione.setInputMask('999999')
+        self.boxPrenotazione.addWidget(self.labelPrenotazione)
+        self.boxPrenotazione.addWidget(self.inserimentoPrenotazione)
+
         self.layoutV = QVBoxLayout()
+        self.layoutV.addLayout(self.boxPrenotazione)
         self.mylist = QListWidget()
 
         item = QListWidgetItem(self.mylist)
@@ -64,42 +72,52 @@ class VistaEffettuaAcquisto(QWidget):
     def confermaAcquisto(self):
 
         acquisto = Acquisto()
-        elenco = []
-        errore = False
-        self.carrello = {}
-        for i in range(self.mylist.count()):
-            item = self.mylist.item(i)
-            widget = self.mylist.itemWidget(item)
-            if widget is not None:
-                tipologia = widget.getTipologia()
-                quantita = widget.getQuantita()
-
-                if tipologia in self.carrello or quantita == 0:
-                    errore = True
-                    break
-
-                bot = Bottiglia().aggiungiBottiglia(tipologia, quantita)
-                d = deepcopy(bot)
-                elenco.append(d)
-
-                self.carrello[tipologia] = bot
-
-        if errore:
-            QMessageBox.critical(self, 'Errore', 'Inserisci i dati corretti', QMessageBox.Ok, QMessageBox.Ok)
-
-        else:
-            #print(self.carrello.values()) # da provare
-            #print(elenco)   # prima scelta
-
-            n = random.randint(1, sys.maxsize)
-            a = acquisto.effettuaAcquisto(n, elenco) #acquisto.effettuaAcquisto(1, self.carrello.values())
-            if not a:
-                QMessageBox.critical(self, 'Errore', 'Acquisto non andato a buon fine', QMessageBox.Ok, QMessageBox.Ok)
+        if self.inserimentoPrenotazione.text() != '' and self.inserimentoPrenotazione.text() != '0':
+            self.codicePrenotazione = int(self.inserimentoPrenotazione.text())  #set no edit?
+            verifica = acquisto.effettuaAcquisto(0, None, self.codicePrenotazione)
+            if not verifica:
+                QMessageBox.critical(self, 'Errore', 'Prenotazione non valida', QMessageBox.Ok, QMessageBox.Ok)
             else:
                 self.msgBox(acquisto.importoTotale)
 
-            self.callback()
-            self.close()
+        else:
+
+            elenco = []
+            errore = False
+            self.carrello = {}
+            for i in range(self.mylist.count()):
+                item = self.mylist.item(i)
+                widget = self.mylist.itemWidget(item)
+                if widget is not None:
+                    tipologia = widget.getTipologia()
+                    quantita = widget.getQuantita()
+
+                    if tipologia in self.carrello or quantita == 0:
+                        errore = True
+                        break
+
+                    bot = Bottiglia().aggiungiBottiglia(tipologia, quantita)
+                    d = deepcopy(bot)
+                    elenco.append(d)
+
+                    self.carrello[tipologia] = bot
+
+            if errore:
+                QMessageBox.critical(self, 'Errore', 'Inserisci i dati corretti', QMessageBox.Ok, QMessageBox.Ok)
+
+            else:
+                #print(self.carrello.values()) # da provare
+                #print(elenco)   # prima scelta
+
+                n = random.randint(1, 999999)  #sys.maxsize
+                verifica = acquisto.effettuaAcquisto(n, elenco) #acquisto.effettuaAcquisto(1, self.carrello.values())
+                if not verifica:
+                    QMessageBox.critical(self, 'Errore', 'Acquisto non andato a buon fine', QMessageBox.Ok, QMessageBox.Ok)
+                else:
+                    self.msgBox(acquisto.importoTotale)
+
+        self.callback()
+        self.close()
 
     def msgBox(self, importo):
         msg = QMessageBox()

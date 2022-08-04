@@ -56,8 +56,7 @@ class Acquisto:
                 self.codice = codiceP
                 self.elencoProdotti = prenotazione.prodotti
                 aggiorna = False
-                p = Prenotazione()
-                p.rimuoviPrenotazione(codiceP)
+                Prenotazione().rimuoviPrenotazione(codiceP)
             else:
                 print('Nessuna prenotazione trovata')
                 return False
@@ -67,17 +66,19 @@ class Acquisto:
             return False
 
         acquistabile = True
-        if isinstance(elencoProdotti, Iterable):
-            for elem in elencoProdotti:
-                if self.controllaDisponibilita(elem.tipologia, elem.quantita) and acquistabile:
+        if aggiorna:
+
+            if isinstance(elencoProdotti, Iterable):
+                for elem in elencoProdotti:
+                    if self.controllaDisponibilita(elem.tipologia, elem.quantita) and acquistabile:
+                        acquistabile = True
+                    else:
+                        acquistabile = False
+            else:
+                if self.controllaDisponibilita(elencoProdotti.tipologia, elencoProdotti.quantita):
                     acquistabile = True
                 else:
                     acquistabile = False
-        else:
-            if self.controllaDisponibilita(elencoProdotti.tipologia, elencoProdotti.quantita):
-                acquistabile = True
-            else:
-                acquistabile = False
 
         if acquistabile:
             self.calcolaTotale()
