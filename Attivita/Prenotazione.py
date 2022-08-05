@@ -24,7 +24,7 @@ class Prenotazione:
                 iTot += prezzo * prodotto.quantita
                 qTot += prodotto.quantita
         else:
-            iTot = self.recuperaPrezzo(self.prodotti.tipologia)
+            iTot = self.recuperaPrezzo(self.prodotti.tipologia) * self.prodotti.quantita
             qTot = self.prodotti.quantita
         self.importoTotale = iTot
         self.quantitaTotale = qTot
@@ -32,40 +32,42 @@ class Prenotazione:
 
     def aggiungiPrenotazione(self, codice, cliente, prodotti):
 
-        prenotabile = True
-        if isinstance(prodotti, Iterable):
-            for elem in prodotti:
-                if self.controllaDisponibilita(elem.tipologia, elem.quantita) and prenotabile:
+        if self.ricercaPrenotazioneCliente(cliente.codiceFiscale) is None:
+            prenotabile = True
+            if isinstance(prodotti, Iterable):
+                for elem in prodotti:
+                    if self.controllaDisponibilita(elem.tipologia, elem.quantita) and prenotabile:
+                        prenotabile = True
+                    else:
+                        prenotabile = False
+            else:
+                if self.controllaDisponibilita(prodotti.tipologia, prodotti.quantita):
                     prenotabile = True
                 else:
                     prenotabile = False
-        else:
-            if self.controllaDisponibilita(prodotti.tipologia, prodotti.quantita):
-                prenotabile = True
+
+            if prenotabile:
+                self.codice = codice
+                self.cliente = cliente
+                self.dataInserimento = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                self.prodotti = prodotti
+                self.calcolaTotale()
+
+                prenotazione = {}
+                if os.path.isfile('Dati/Prenotazioni.pickle'):
+                    with open('Dati/Prenotazioni.pickle', 'rb') as file:
+                        prenotazione = pickle.load(file)
+
+                prenotazione[codice] = self
+
+                with open('Dati/Prenotazioni.pickle', 'wb') as file:
+                    pickle.dump(prenotazione, file, pickle.HIGHEST_PROTOCOL)
+                return True
+
             else:
-                prenotabile = False
-
-        if prenotabile:
-            self.codice = codice
-            self.cliente = cliente
-            self.dataInserimento = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            self.prodotti = prodotti
-            self.calcolaTotale()
-
-            prenotazione = {}
-            if os.path.isfile('Dati/Prenotazioni.pickle'):
-                with open('Dati/Prenotazioni.pickle', 'rb') as file:
-                    prenotazione = pickle.load(file)
-
-            prenotazione[codice] = self
-
-            with open('Dati/Prenotazioni.pickle', 'wb') as file:
-                pickle.dump(prenotazione, file, pickle.HIGHEST_PROTOCOL)
-            return True
-
+                return False
         else:
             return False
-
 
     def rimuoviPrenotazione(self, codice):
         if os.path.isfile('Dati\Prenotazioni.pickle'):
