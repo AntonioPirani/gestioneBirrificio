@@ -50,4 +50,17 @@ class Cliente(Utilizzatore):
         visualizza = self.visualizzaUtilizzatore()
         visualizza["informazioni"] = self.informazioni
         visualizza["tipologia"] = self.tipologia
-        return visualizza 
+        return visualizza
+
+    def autenticaCliente(self, codice, password):
+        if os.path.isfile('Dati/Clienti.pickle'):
+            with open('Dati/Clienti.pickle', 'rb') as f:
+                clienti = dict(pickle.load(f))
+                for cliente in clienti.values():
+                    if cliente.codiceFiscale == codice and cliente.password == password:
+                        self = cliente
+                        return self
+                        #return cliente?
+                return False
+        else:
+            return False
