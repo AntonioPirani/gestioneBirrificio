@@ -1,6 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
-    QDialog, QLineEdit, QMessageBox
+    QDialog, QLineEdit, QMessageBox, QHBoxLayout
 from PyQt5 import QtCore
+
+from Attivita.Cliente import Cliente
+from Attivita.Prenotazione import Prenotazione
 from Viste.VistaClienti import VistaClienti
 
 from Viste.VistaPrenotazione import VistaPrenotazione
@@ -41,6 +44,52 @@ class VistaAreaCliente(QWidget):
         self.vistaRegistrazione.show()
 
     def gestionePrenotazione(self):
-        self.vistaPrenotazione = VistaPrenotazione()
-        self.vistaPrenotazione.show()
-        self.close()
+        dlg = CustomLogin(self)
+        if dlg.exec():
+            if dlg.qLineLog.text() != "" and dlg.qLinePW.text() != "":
+                #autentica utente:
+                cliente = Cliente().autenticaCliente(dlg.qLineLog.text(), dlg.qLinePW.text())
+                if cliente is not False:
+                    #cliente autenticato
+                    prenotazione = Prenotazione().ricercaPrenotazioneCliente(cliente.codiceFiscale)
+                    self.vistaPrenotazione = VistaPrenotazione(cliente, prenotazione)
+                    self.vistaPrenotazione.show()
+
+                else:
+                    QMessageBox.critical(self, 'Errore', 'Cliente non autenticato', QMessageBox.Ok, QMessageBox.Ok)
+        else:
+            pass
+
+
+class CustomLogin(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setStyleSheet('background-color: rgba(255, 255, 255);')
+        self.setWindowTitle("Accedi")
+
+        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.layout = QVBoxLayout()
+        self.layoutGrid = QGridLayout()
+
+        self.qLabel = QLabel()
+        self.qLabel.setText("Codice: ")
+        self.layoutGrid.addWidget(self.qLabel, 0, 0)
+        self.qLineLog = QLineEdit()
+        self.layoutGrid.addWidget(self.qLineLog, 0, 1)
+
+        self.qLabelPw = QLabel()
+        self.qLabelPw.setText("Password:")
+        self.layoutGrid.addWidget(self.qLabelPw, 1, 0)
+        self.qLinePW = QLineEdit()
+        self.qLinePW.setEchoMode(QLineEdit.Password)
+        self.layoutGrid.addWidget(self.qLinePW, 1, 1)
+
+        self.layout.addLayout(self.layoutGrid)
+        self.layout.addWidget(self.buttonBox)
+        self.setLayout(self.layout)
+
