@@ -76,6 +76,13 @@ class Prenotazione:
             with open('Dati\Prenotazioni.pickle', 'wb') as f2:
                 pickle.dump(prenotazioni, f2, pickle.HIGHEST_PROTOCOL)
 
+            if self.confermata is True:
+                if isinstance(self.prodotti, Iterable):
+                    for elem in self.prodotti:
+                        self.riassegnaQuantita(elem)
+                else:
+                    self.riassegnaQuantita(self.prodotti)
+
             self.codice = 0
             self.cliente = None
             self.confermata = False
@@ -86,17 +93,18 @@ class Prenotazione:
             del self
 
 
-    def modificaPrenotazione(self, prodotti, codice):
-        if os.path.isfile('Dati\Prenotazioni.pickle'):
-            with open('Dati\Prenotazioni.pickle', 'rb') as f:
-                prenotazione = dict(pickle.load(f))
-
-                self.prodotti = prodotti
-                self.calcolaTotale()
-                prenotazione[codice] = self
-
-        with open('Dati\Prenotazioni.pickle', 'wb') as f:
-            pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
+    def modificaPrenotazione(self, codice, cliente, prodotti):
+        # if os.path.isfile('Dati\Prenotazioni.pickle'):
+        #     with open('Dati\Prenotazioni.pickle', 'rb') as f:
+        #         prenotazione = dict(pickle.load(f))
+        #
+        #         self.prodotti = prodotti
+        #         self.calcolaTotale()
+        #         prenotazione[codice] = self
+        #
+        # with open('Dati\Prenotazioni.pickle', 'wb') as f:
+        #     pickle.dump(prenotazione, f, pickle.HIGHEST_PROTOCOL)
+        self.aggiungiPrenotazione(codice, cliente, prodotti)
 
 
     def ricercaPrenotazione(self, codice):
@@ -216,6 +224,28 @@ class Prenotazione:
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
 
+
+    def riassegnaQuantita(self, elem):
+        if os.path.isfile('Dati\Inventario.pickle'):
+            with open('Dati\Inventario.pickle', 'rb') as f:
+                inventario = dict(pickle.load(f))
+
+        for prodotto in inventario.values():
+            try:
+                if prodotto.tipologia == elem.tipologia:
+                    elem.quantita = prodotto.quantita + elem.quantita
+            except:
+                try:
+                    if prodotto.nome == elem.tipologia:
+                        elem.quantita = prodotto.quantita + elem.quantita
+                except:
+                    print('AttributeError')
+                    return False
+
+        inventario[elem.tipologia] = elem
+
+        with open('Dati/Inventario.pickle', 'wb') as file:
+            pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
 
     def __str__(self):
         return f'Prenotazione({self.codice}, {self.cliente}, {self.prodotti}, {self.dataInserimento}, {self.importoTotale}, {self.quantitaTotale}, {self.confermata})'
