@@ -120,6 +120,21 @@ class Prenotazione:
         return None
 
 
+    def ricercaPrenotazioneCliente(self, codiceF):
+        if os.path.isfile('Dati\Prenotazioni.pickle'):
+            with open('Dati\Prenotazioni.pickle', 'rb') as f:
+                prenotazioni = dict(pickle.load(f))
+                f.close()
+                try:
+                    for pren in prenotazioni.values():
+                        if pren.cliente.codiceFiscale == codiceF:
+                            self = pren
+                            return self
+                except:
+                    return None
+        return None
+
+
     def visualizzaPrenotazione(self, codice):
         self = self.ricercaPrenotazione(codice)
         if os.path.isfile('Dati\Prenotazioni.pickle'):
