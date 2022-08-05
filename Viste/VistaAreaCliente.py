@@ -39,7 +39,6 @@ class VistaAreaCliente(QWidget):
     def registrazione(self):
         self.vistaRegistrazione = VistaClienti()
         self.vistaRegistrazione.show()
-        self.close()
 
     def gestionePrenotazione(self):
         self.vistaPrenotazione = VistaPrenotazione()

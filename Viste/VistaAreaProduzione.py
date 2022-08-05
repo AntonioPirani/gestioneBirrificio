@@ -37,8 +37,6 @@ class VistaAreaProduzione(QWidget):
     def materieUtilizzate(self):
         self.vistaLavorazione = VistaInizioLavorazione()
         self.vistaLavorazione.show()
-        self.close()
-        #print('Inserisci le materie che vuoi impiegare')
 
     def dati(self):
         print('Visualizza dati della produzione')
