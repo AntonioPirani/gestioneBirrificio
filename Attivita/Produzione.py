@@ -26,19 +26,11 @@ class Produzione:
         self.composto = "Composto"+str(codiceProduzione)
 
         self.materieRimosse = materia
-        self.aggiornaMagazzinoMaterie(self.materieUtilizzate) #rimuovi materie utilizzate
+        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate    materieUtilizzate
 
         self.prodotto = prodotto
+        self.aggiornaMagazzinoProdotti(self.prodotto) #aggiorna prodotto
         self.registraProdotto(codiceProduzione) #registro prodotto
-        self.aggiornaMagazzinoProdotti(self.prodotto)#aggiorna prodotto
-
-        produzioni = {}
-        if os.path.isfile('Dati/Produzioni.pickle'):
-            with open('Dati/Produzioni.pickle', 'rb') as f:
-                produzioni = pickle.load(f)
-        produzioni[codiceProduzione] = self
-        with open('Dati/Produzioni.pickle', 'wb') as f:
-            pickle.dump(produzioni, f, pickle.HIGHEST_PROTOCOL)
 
     def visualizzaProduzione(self):
         return {
@@ -99,11 +91,11 @@ class Produzione:
     def registraProdotto(self, codiceProduzione):
         self.codiceProduzione = codiceProduzione
         prodotti = {}
-        if os.path.isfile('Dati/Inventario.pickle'):
-            with open('Dati/Inventario.pickle', 'rb') as f:
+        if os.path.isfile('Dati/Produzioni.pickle'):
+            with open('Dati/Produzioni.pickle', 'rb') as f:
                 prodotti = pickle.load(f)
         prodotti[codiceProduzione] = self
-        with open('Dati/Inventario.pickle', 'wb') as f:
+        with open('Dati/Produzioni.pickle', 'wb') as f:
             pickle.dump(prodotti, f, pickle.HIGHEST_PROTOCOL)
 
     def aggiornaMagazzinoMaterie(self, materieRimosse):
