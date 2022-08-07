@@ -15,7 +15,6 @@ class VistaAreaCliente(QWidget):
         super(VistaAreaCliente, self).__init__(parent)
 
         self.setStyleSheet('background-color: rgba(255, 0, 0);')
-        self.setStyleSheet('background-color: rgba(255, 0, 0);')
         self.label = QLabel("Area Cliente", self)
         self.label.setStyleSheet('font: 87 20pt "Arial Black";color: rgb(255, 255, 127);'
                                  'background-color: rgba(255, 153, 0);')
@@ -56,10 +55,17 @@ class VistaAreaCliente(QWidget):
                     self.vistaPrenotazione.show()
 
                 else:
-                    QMessageBox.critical(self, 'Errore', 'Cliente non autenticato', QMessageBox.Ok, QMessageBox.Ok)
+                    self.msgBox()
         else:
             pass
 
+    def msgBox(self):
+        msg = QMessageBox()
+        msg.setStyleSheet('background-color: rgb(255, 255, 255);')
+        msg.setWindowTitle('Errore')
+        msg.setText("Cliente non autenticato")
+        msg.setIcon(3)
+        msg.exec()
 
 class CustomLogin(QDialog):
     def __init__(self, parent=None):
