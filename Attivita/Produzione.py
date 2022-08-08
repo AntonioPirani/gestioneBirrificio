@@ -20,13 +20,13 @@ class Produzione:
         self.codiceProduzione = codiceProduzione
         self.note = ""
         self.dataInizio = datetime.date.today()
-        self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un giorno dall'inizio (necessita di scaricarsi il pacchetto dateutil)
+        self.dataFine = self.dataInizio + pd.DateOffset(days=1) #la fine della produzione avviene dopo un giorno dall'inizio
         self.livello=1
         self.temperatura=18.0
         self.composto = "Composto"+str(codiceProduzione)
 
         self.materieRimosse = materia
-        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate    materieUtilizzate
+        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate materieUtilizzate
 
         self.prodotto = prodotto
         self.aggiornaMagazzinoProdotti(self.prodotto) #aggiorna prodotto

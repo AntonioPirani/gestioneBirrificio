@@ -22,6 +22,7 @@ class VistaInizioLavorazione(QWidget):
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 4)
 
+
         self.label1 = QLabel("Materia", self)
         self.label2 = QLabel("Quantità", self)
         self.label3 = QLabel("Prodotto", self)
@@ -40,7 +41,7 @@ class VistaInizioLavorazione(QWidget):
         self.layout.addWidget(self.comboBox, 2, 1, 1, 2)
         self.layout.addWidget(self.spinBox, 3, 1, 1, 2)
 
-        self.layout.addWidget(self.button, 4, 3, 1, 1)
+        self.layout.addWidget(self.button, 4, 0, 1, 1)
 
         self.comboBox.addItem("Vienna")
         self.comboBox.addItem("Monaco")
@@ -64,8 +65,6 @@ class VistaInizioLavorazione(QWidget):
         print(self.produzione.visualizzaProduzione())
         print("Inizia la lavorazione")
 
-    
-    
     
     def getProdotto(self):
         prodotto = Prodotto()
