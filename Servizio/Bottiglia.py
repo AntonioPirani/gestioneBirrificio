@@ -41,4 +41,4 @@ class Bottiglia(Prodotto):
             pickle.dump(prod, file, pickle.HIGHEST_PROTOCOL)
 
     def __str__(self):
-        return f'Bottiglia({self.tipologia}, {self.quantita}, {self.prezzoUnitario})'
+        return f'Bottiglia({self.tipologia}, {self.quantita})'

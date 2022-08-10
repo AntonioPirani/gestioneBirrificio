@@ -68,5 +68,13 @@ class Cliente(Utilizzatore):
         else:
             return False
 
+    #metodo necessario per unittest
+    def testCliente(self, informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale, password):
+        self.aggiungiUtilizzatore(telefono, nome, email, dataNascita, cognome, codiceFiscale)
+        self.informazioni = informazioni
+        self.tipologia = tipologia
+        self.password = password
+        return self
+
     def __str__(self):
         return f"Nome: {self.nome}, Cognome: {self.cognome}"

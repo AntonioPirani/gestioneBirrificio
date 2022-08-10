@@ -207,7 +207,7 @@ class Prenotazione:
                         except:
                             print('AttributeError')
                             ok = False
-        file0.close()
+                file0.close()
         return ok
 
     def recuperaPrezzo(self, tipologia):
