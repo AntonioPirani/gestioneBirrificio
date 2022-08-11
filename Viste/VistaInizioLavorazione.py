@@ -1,3 +1,4 @@
+from tkinter import messagebox
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QComboBox, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox, QSpinBox
 from PyQt5 import QtCore
@@ -20,7 +21,7 @@ class VistaInizioLavorazione(QWidget):
         self.label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.layout = QGridLayout()
-        self.layout.addWidget(self.label, 0, 0, 1, 4)
+        self.layout.addWidget(self.label, 0, 0, 1, 5)
 
 
         self.label1 = QLabel("Materia", self)
@@ -30,18 +31,21 @@ class VistaInizioLavorazione(QWidget):
         self.comboBox = QComboBox(self)
         self.spinBox = QSpinBox(self)
         self.comboBox2 = QComboBox(self)
+        self.spinBox2 = QSpinBox(self)
 
         self.button = QPushButton("Inizia Lavorazione")
 
         self.layout.addWidget(self.label3, 1, 0, 1, 1)
         self.layout.addWidget(self.label1, 2, 0, 1, 1)
-        self.layout.addWidget(self.label2, 3, 0, 1, 1)
+        self.layout.addWidget(self.label2, 1, 2, 1, 1)
+        self.layout.addWidget(self.label2, 2, 2, 1, 1)
 
         self.layout.addWidget(self.comboBox2, 1, 1, 1, 2)
         self.layout.addWidget(self.comboBox, 2, 1, 1, 2)
-        self.layout.addWidget(self.spinBox, 3, 1, 1, 2)
+        self.layout.addWidget(self.spinBox, 1, 3, 1, 2)
+        self.layout.addWidget(self.spinBox2, 2, 3, 1, 2)
 
-        self.layout.addWidget(self.button, 4, 0, 1, 1)
+        self.layout.addWidget(self.button, 4, 4, 1, 1)
 
         self.comboBox.addItem("Vienna")
         self.comboBox.addItem("Monaco")
@@ -69,14 +73,22 @@ class VistaInizioLavorazione(QWidget):
     def getProdotto(self):
         prodotto = Prodotto()
         prodotto.tipologia = self.comboBox2.currentText()
-        prodotto.quantita = 1
+        prodotto.quantita = self.spinBox.value()
         return prodotto
 
     def getMateria(self):
         materia = Materia()
         materia.nome = self.comboBox.currentText()
-        materia.quantita = self.spinBox.value()
-        return materia
+        materia.quantita = self.spinBox2.value()
+
+        if not self.controllaDisponibilita(materia.nome, materia.quantita): 
+            msgbox = QMessageBox()
+            msgbox.setText("Materia insufficiente")
+            msgbox.exec()
+        else: 
+            return materia
+           
+        
 
     def controllaDisponibilita(self, tipologia, quantita):
         ok = False
@@ -96,6 +108,3 @@ class VistaInizioLavorazione(QWidget):
                             ok = False
         file0.close()
         return ok
-
-    #def getQuantita(self):
-        #return self.spinBox.value()
