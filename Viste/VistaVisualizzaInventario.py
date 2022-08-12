@@ -1,7 +1,6 @@
 import os
 import pickle
 
-import callback
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy, QListView
 from Viste.VistaAggiungiMateria import VistaAggiungiMateria
@@ -32,7 +31,7 @@ class VistaVisualizzaInventario(QWidget):
         self.aggiungiMateria = VistaAggiungiMateria(callback=self.visualizzaInventario)
         self.aggiungiMateria.show()
 
-    def caricaInventarioMaterie(self):
+    def caricaInventario(self):
         if os.path.isfile('Dati\Inventario.pickle'):
             with open('Dati\Inventario.pickle', 'rb') as f:
                 app = dict(pickle.load(f))
@@ -40,7 +39,7 @@ class VistaVisualizzaInventario(QWidget):
 
     def visualizzaInventario(self):
         self.inventario = []
-        self.caricaInventarioMaterie()
+        self.caricaInventario()
         listViewModelMaterie = QStandardItemModel(self.listView_materia)
         listViewModelProdotto = QStandardItemModel(self.listView_prodotto)
         for mat in self.inventario:

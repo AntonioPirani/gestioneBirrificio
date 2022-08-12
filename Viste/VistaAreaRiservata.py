@@ -1,4 +1,3 @@
-import callback
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore

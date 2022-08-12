@@ -2,7 +2,6 @@ import datetime
 from copy import deepcopy
 import random
 
-import self
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QSizePolicy, QLabel, QListWidget, \
     QListWidgetItem, QComboBox, QSpinBox, QMessageBox
 
@@ -69,13 +68,16 @@ class VistaAggiungiMateria(QWidget):
                 mat = Materia().aggiungiMateria(1, "", "", nome, quantita, datetime.datetime(1970, 1, 1, 0, 0))
                 d = deepcopy(mat)
                 elenco.append(d)
-
+                #print(type(elenco).__name__) #list
+                #print(type(mat).__name__)   #Materia
+                print("\nbreak\n")
                 self.carrello[nome] = mat
 
         if errore:
             QMessageBox.critical(self, 'Errore', 'Inserisci i dati corretti', QMessageBox.Ok, QMessageBox.Ok)
         else:
-            inventario.aggiornaMagazzino(elenco)
+            for materia in elenco:
+                inventario.aggiornaMagazzino(materia)
             
         self.callback()
         self.close()
