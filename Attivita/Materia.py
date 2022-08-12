@@ -26,6 +26,7 @@ class Materia:
         materie[codice] = self
         with open('Dati/Materie.pickle', 'wb') as f:
             pickle.dump(materie, f, pickle.HIGHEST_PROTOCOL)
+        return self
 
     def ricercaMateria(self, codice):
         if os.path.isfile('Dati/Materie.pickle'):

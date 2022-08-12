@@ -80,12 +80,13 @@ class Inventario:
             except:
                 try:
                     if materia.tipologia == materiePrime.nome:
-                        self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                        #self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                        print("Bottiglia")
                 except:
                     print('AttributeError')
                     return False
 
-        inventario_m[materiePrime.nome] = self.materiePrime
+        inventario_m[self.materiePrime.nome] = self.materiePrime
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)

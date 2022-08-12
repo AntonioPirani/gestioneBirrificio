@@ -1,9 +1,11 @@
+import callback
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox
 from PyQt5 import QtCore
 
 from Viste.VistaAreaProduzione import VistaAreaProduzione
 from Viste.VistaGestisciAcquisto import VistaGestisciAcquisto
+from Viste.VistaVisualizzaInventario import VistaVisualizzaInventario
 
 
 class VistaAreaRiservata(QWidget):
@@ -42,8 +44,10 @@ class VistaAreaRiservata(QWidget):
         self.vistaGestisciAcquisto.show()
 
     def visualizzaInventario(self):
-        print('Inventario')
+        self.vistaVisualizzaInventario = VistaVisualizzaInventario()
+        self.vistaVisualizzaInventario.show()
 
     def iniziaProduzione(self):
         self.vistaAreaProduzione = VistaAreaProduzione()
         self.vistaAreaProduzione.show()
+
