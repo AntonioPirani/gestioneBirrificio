@@ -167,7 +167,7 @@ class Acquisto:
                         except:
                             print('AttributeError')
                             ok = False
-        file0.close()
+                file0.close()
         return ok
 
 

@@ -72,20 +72,22 @@ class Inventario:
         if os.path.isfile('Dati/Inventario.pickle'):
             with open('Dati/Inventario.pickle', 'rb') as file:
                 inventario_m = dict(pickle.load(file))
+                file.close()
 
+        print(type(materiePrime).__name__)
         for materia in inventario_m.values():
             try:
                 if materia.nome == materiePrime.nome:
-                    self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                    self.materiePrime.quantita = materia.quantita + materiePrime.quantita
             except:
                 try:
                     if materia.tipologia == materiePrime.nome:
-                        self.materiePrime.quantita = materia.quantita - materiePrime.quantita
+                        #self.materiePrime.quantita = materia.quantita + materiePrime.quantita
+                        print("Bottiglia")
                 except:
                     print('AttributeError')
-                    return False
 
-        inventario_m[materiePrime.nome] = self.materiePrime
+        inventario_m[self.materiePrime.nome] = self.materiePrime
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
