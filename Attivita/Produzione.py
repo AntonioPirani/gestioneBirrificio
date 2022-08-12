@@ -26,10 +26,10 @@ class Produzione:
         self.composto = "Composto"+str(codiceProduzione)
 
         self.materieRimosse = materia
-        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate materieUtilizzate
+        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate
 
         self.prodotto = prodotto
-        self.aggiornaMagazzinoProdotti(self.prodotto) #aggiorna prodotto
+        self.aggiornaMagazzinoProdotti(self.prodotto) #aggiorna il prodotto all'inventario
         self.registraProdotto(codiceProduzione) #registro prodotto
 
     def visualizzaProduzione(self):
