@@ -112,7 +112,8 @@ class Produzione:
             except:
                 try:
                     if materia.tipologia == materieRimosse.nome:
-                        self.materieRimosse.quantita = materia.quantita - materieRimosse.quantita
+                        #self.materieRimosse.quantita = materia.quantita - materieRimosse.quantita
+                        print("")
                 except:
                     print('AttributeError')
                     return False
@@ -137,7 +138,8 @@ class Produzione:
             except:
                 try:
                     if prodotto.nome == prodottoAggiunto.tipologia:
-                        self.prodottoAggiunto.quantita = prodotto.quantita + prodottoAggiunto.quantita
+                        #self.prodottoAggiunto.quantita = prodotto.quantita + prodottoAggiunto.quantita
+                        print("")
                 except:
                     print('AttributeError')
                     return False
