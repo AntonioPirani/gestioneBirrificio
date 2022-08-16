@@ -1,7 +1,7 @@
 import os.path
 import pickle
 
-import current as current
+#import current as current
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox, QHBoxLayout, QListView
@@ -13,14 +13,14 @@ class VistaDatiProduzione(QWidget):
 
     def __init__(self, parent=None):
         super(VistaDatiProduzione, self).__init__(parent)
-        layout = QHBoxLayout()
+        self.layout = QHBoxLayout()
         self.list_view = QListView()
         self.aggiorna_produzione()
         self.layout.addWidget(self.list_view)
 
         self.resize(400, 300)
         self.setWindowTitle("Gestore Birrificio")
-        self.setLayout(layout)
+        self.setLayout(self.layout)
         self.show()
 
     def getButton(self, titolo, on_click):
@@ -43,7 +43,7 @@ class VistaDatiProduzione(QWidget):
         listview_model = QStandardItemModel(self.list_view)
         for produzione in self.produzioni:
             item = QStandardItem()
-            dati = f" {produzione.dataInzio} fine: {produzione.dataFine} - {produzione.temperatura} {produzione.livello} {produzione.composto}"
+            dati = f" {produzione.dataInizio} fine: {produzione.dataFine} - {produzione.temperatura} {produzione.livello} {produzione.composto}"
             item.setText(dati)
             item.setEditable(False)
             font = item.font()
