@@ -68,7 +68,7 @@ class VistaInizioLavorazione(QWidget):
         if not self.getMateria():
             self.close()
         else:
-            self.produzione.inizioLavorazione(1, self.getMateria(), self.getProdotto()) 
+            self.produzione.inizioLavorazione(self.getCodice(), self.getMateria(), self.getProdotto()) 
             print(self.produzione.visualizzaProduzione)
             msgbox = QMessageBox()
             msgbox.setText("Lavorazione iniziata con successo")
@@ -93,6 +93,21 @@ class VistaInizioLavorazione(QWidget):
             return False
         else: 
             return materia
+
+    def getCodice(self):
+        i = 1
+        if os.path.isfile('Dati\Produzioni.pickle'):
+            with open('Dati\Produzioni.pickle', 'rb') as file0:
+                produzioni = dict(pickle.load(file0))
+                for produzione in produzioni.values():
+                        if produzione.codiceProduzione == i:
+                            i = i+1
+            file0.close()
+            codice = i
+        else:
+            codice = 1
+
+        return codice
         
 
     def controllaDisponibilita(self, tipologia, quantita):
