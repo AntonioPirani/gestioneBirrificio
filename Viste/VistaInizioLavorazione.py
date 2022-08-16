@@ -65,10 +65,12 @@ class VistaInizioLavorazione(QWidget):
 
     def iniziaLavorazione(self):
         self.produzione = Produzione()
-        self.produzione.inizioLavorazione(1, self.getMateria(), self.getProdotto()) 
-        print(self.produzione.visualizzaProduzione())
-        print("Inizia la lavorazione")
-
+        if not self.getMateria():
+            self.close()
+        else:
+            self.produzione.inizioLavorazione(1, self.getMateria, self.getProdotto) 
+            print(self.produzione.visualizzaProduzione)
+            print("Inizia la lavorazione")
     
     def getProdotto(self):
         prodotto = Prodotto()
@@ -85,9 +87,9 @@ class VistaInizioLavorazione(QWidget):
             msgbox = QMessageBox()
             msgbox.setText("Materia insufficiente")
             msgbox.exec()
+            return False
         else: 
             return materia
-           
         
 
     def controllaDisponibilita(self, tipologia, quantita):
