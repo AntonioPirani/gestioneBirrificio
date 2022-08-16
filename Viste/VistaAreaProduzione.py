@@ -21,7 +21,7 @@ class VistaAreaProduzione(QWidget):
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.label, 0, 0, 1, 2)
-        self.layout.addWidget(self.getButton('Inserisci\nmaterie\nprime', self.materieUtilizzate), 1, 0)
+        self.layout.addWidget(self.getButton('Inserisci\nnuova\nproduzione', self.materieUtilizzate), 1, 0)
         self.layout.addWidget(self.getButton('Visualizza\ndati', self.dati), 1, 1)
 
         self.resize(400, 300)

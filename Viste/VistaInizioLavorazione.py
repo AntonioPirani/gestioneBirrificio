@@ -68,9 +68,12 @@ class VistaInizioLavorazione(QWidget):
         if not self.getMateria():
             self.close()
         else:
-            self.produzione.inizioLavorazione(1, self.getMateria, self.getProdotto) 
+            self.produzione.inizioLavorazione(1, self.getMateria(), self.getProdotto()) 
             print(self.produzione.visualizzaProduzione)
-            print("Inizia la lavorazione")
+            msgbox = QMessageBox()
+            msgbox.setText("Lavorazione iniziata con successo")
+            msgbox.exec()
+            self.close()
     
     def getProdotto(self):
         prodotto = Prodotto()
