@@ -3,8 +3,10 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLab
     QDialog, QLineEdit, QMessageBox, QSpinBox
 from PyQt5 import QtCore
 
+import datetime
 import pickle
 import os
+import pandas as pd
 
 from Attivita.Produzione import Produzione
 from Servizio.Prodotto import Prodotto
@@ -65,13 +67,19 @@ class VistaInizioLavorazione(QWidget):
 
     def iniziaLavorazione(self):
         self.produzione = Produzione()
-        if not self.getMateria():
-            self.close()
+        if not self.controllaLavInCorso():
+            if not self.getMateria():
+                self.close()
+            else:
+                self.produzione.inizioLavorazione(self.getCodice(), self.getMateria(), self.getProdotto()) 
+                print(self.produzione.visualizzaProduzione)
+                msgbox = QMessageBox()
+                msgbox.setText("Lavorazione iniziata con successo")
+                msgbox.exec()
+                self.close()
         else:
-            self.produzione.inizioLavorazione(self.getCodice(), self.getMateria(), self.getProdotto()) 
-            print(self.produzione.visualizzaProduzione)
             msgbox = QMessageBox()
-            msgbox.setText("Lavorazione iniziata con successo")
+            msgbox.setText("Lavorazione in corso \nImpossibile iniziare nuova produzione")
             msgbox.exec()
             self.close()
     
@@ -109,6 +117,20 @@ class VistaInizioLavorazione(QWidget):
 
         return codice
         
+
+    def controllaLavInCorso(self):
+        ok = False
+        if os.path.isfile('Dati\Produzioni.pickle'):
+            with open('Dati\Produzioni.pickle', 'rb') as file0:
+                produzioni = dict(pickle.load(file0))
+                for produzione in produzioni.values():
+                    if produzione.dataFine >= pd.Timestamp(datetime.date.today()):
+                        ok = True
+            file0.close()
+        else:
+            ok = False
+        return ok
+
 
     def controllaDisponibilita(self, tipologia, quantita):
         ok = False
