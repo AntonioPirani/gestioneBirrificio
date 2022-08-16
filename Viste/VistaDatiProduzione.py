@@ -9,6 +9,7 @@ from PyQt5 import QtCore
 
 from Attivita.Produzione import Produzione
 
+
 class VistaDatiProduzione(QWidget):
 
     def __init__(self, parent=None):
@@ -19,17 +20,9 @@ class VistaDatiProduzione(QWidget):
         self.layout.addWidget(self.list_view)
 
         self.resize(400, 300)
-        self.setWindowTitle("Gestore Birrificio")
+        self.setWindowTitle("Cronologia Produzioni")
         self.setLayout(self.layout)
         self.show()
-
-    def getButton(self, titolo, on_click):
-        button = QPushButton(titolo)
-        button.setStyleSheet('background-color: rgba(255, 153, 0);'
-                             'font: 75 14pt "Arial";color: rgb(255, 255, 127);')
-        button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        button.clicked.connect(on_click)
-        return button
 
     def load_produzioni(self):
         if os.path.isfile('Dati/Produzioni.pickle'):
@@ -43,7 +36,7 @@ class VistaDatiProduzione(QWidget):
         listview_model = QStandardItemModel(self.list_view)
         for produzione in self.produzioni:
             item = QStandardItem()
-            dati = f" {produzione.dataInizio} fine: {produzione.dataFine} - {produzione.temperatura} {produzione.livello} {produzione.composto}"
+            dati = f"Codice:{produzione.codiceProduzione} - inizio:{produzione.dataInizio.strftime('%d/%m/%Y')} fine:{produzione.dataFine.strftime('%d/%m/%Y')} - Temperatura:{produzione.temperatura} Livello:{produzione.livello} Composto:{produzione.composto}"
             item.setText(dati)
             item.setEditable(False)
             font = item.font()
@@ -51,5 +44,3 @@ class VistaDatiProduzione(QWidget):
             item.setFont(font)
             listview_model.appendRow(item)
         self.list_view.setModel(listview_model)
-
-    #stampa produzioni nel pickle

@@ -26,11 +26,11 @@ class Produzione:
         self.composto = "Composto"+str(codiceProduzione)
 
         self.materieRimosse = materia
-        self.aggiornaMagazzinoMaterie(self.materieRimosse) #rimuovi materie utilizzate
+        self.aggiornaMagazzinoMaterie(self.materieRimosse)
 
         self.prodotto = prodotto
-        self.aggiornaMagazzinoProdotti(self.prodotto) #aggiorna il prodotto all'inventario
-        self.registraProdotto(codiceProduzione) #registro prodotto
+        self.aggiornaMagazzinoProdotti(self.prodotto)
+        self.registraProdotto(codiceProduzione)
 
     def visualizzaProduzione(self):
         return {
@@ -69,9 +69,9 @@ class Produzione:
                 self.composto = ""
                 del self
 
-    def controllaProdotto(self, codiceProduzione, temperatura, livello, composto, dataInizio, dataFine): #meglio chiamare il metodo in controllaProduzione
+    def controllaProdotto(self, codiceProduzione, temperatura, livello, composto, dataInizio, dataFine):
         while dataInizio <= dataFine:
-            print("Controllo alle ore: "+dataInizio.strftime("%H")+" alla data "+dataInizio.strftime("%Y-%m-%d"))
+            #print("Controllo alle ore: "+dataInizio.strftime("%H")+" alla data "+dataInizio.strftime("%Y-%m-%d"))
             dataInizio = dataInizio + pd.DateOffset(hours=4)
             if temperatura > 50 or livello < 2 or composto != "Composto" + str(codiceProduzione):
                 self.segnalaAnomalia(codiceProduzione)
@@ -81,12 +81,10 @@ class Produzione:
 
 
     def segnalaAnomalia(self, codiceProduzione):
-        print("SEGNALATA ANOMALIA ")
+        #print("SEGNALATA ANOMALIA ")
         self.setTemperatura(20)
         self.setLivello(3)
         self.setComposto("Composto" + str(codiceProduzione))
-
-
 
     def registraProdotto(self, codiceProduzione):
         self.codiceProduzione = codiceProduzione
