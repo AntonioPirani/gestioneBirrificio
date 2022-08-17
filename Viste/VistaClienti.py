@@ -28,6 +28,7 @@ class VistaClienti(QWidget):
         self.label8 = QLabel("Email", self)
         self.label6 = QLabel("Tipologia", self)
         self.label7 = QLabel("Informazioni", self)
+        self.label9 = QLabel("Password", self)
 
         self.lineedit1 = QLineEdit(self)
         self.lineedit2 = QLineEdit(self)
@@ -37,6 +38,8 @@ class VistaClienti(QWidget):
         self.lineedit8 = QLineEdit(self)
         self.lineedit6 = QComboBox(self)
         self.lineedit7 = QLineEdit(self)
+        self.lineedit9 = QLineEdit(self)
+        self.lineedit9.setEchoMode(QLineEdit.Password)
 
         self.button = QPushButton("Registrati")
 
@@ -48,6 +51,7 @@ class VistaClienti(QWidget):
         self.layout.addWidget(self.label8, 6, 0, 1, 1)
         self.layout.addWidget(self.label6, 7, 0, 1, 1)
         self.layout.addWidget(self.label7, 8, 0, 1, 1)
+        self.layout.addWidget(self.label9, 9, 0, 1, 1)
 
         self.layout.addWidget(self.lineedit1, 1, 1, 1, 2)
         self.layout.addWidget(self.lineedit2, 2, 1, 1, 2)
@@ -57,8 +61,9 @@ class VistaClienti(QWidget):
         self.layout.addWidget(self.lineedit8, 6, 1, 1, 2)
         self.layout.addWidget(self.lineedit6, 7, 1, 1, 2)
         self.layout.addWidget(self.lineedit7, 8, 1, 1, 2)
+        self.layout.addWidget(self.lineedit9, 9, 1, 1, 2)
 
-        self.layout.addWidget(self.button, 9, 2, 1, 1)
+        self.layout.addWidget(self.button, 10, 2, 1, 1)
 
         self.lineedit6.addItem("Privato")
         self.lineedit6.addItem("Azienda")
@@ -73,7 +78,7 @@ class VistaClienti(QWidget):
         self.show()
 
     def aggiungiCliente(self):
-        if (self.lineedit1.text() == "" or  self.lineedit2.text() == "" or self.lineedit3.text() == "" or self.lineedit4.text() == "" or self.lineedit5.text() == "" or self.lineedit7.text() == ""):
+        if (self.lineedit1.text() == "" or  self.lineedit2.text() == "" or self.lineedit3.text() == "" or self.lineedit4.text() == "" or self.lineedit5.text() == "" or self.lineedit7.text() == "" or self.lineedit8.text() == "" or self.lineedit9.text() == ""):
                     QMessageBox.critical(self, 'Errore', 'Per favore, inserire tutte le informazioni richieste', QMessageBox.Ok, QMessageBox.Ok)
                     return
         cliente = Cliente()
@@ -86,7 +91,8 @@ class VistaClienti(QWidget):
             tipologia = self.lineedit6.currentText()
             telefono = int(self.lineedit5.text())
             email = self.lineedit8.text()
-            cliente.aggiungiCliente(informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale) #codice
+            password = self.lineedit9.text()
+            cliente.aggiungiCliente(informazioni, tipologia, nome, telefono, email, cognome, dataNascita, codiceFiscale, password) #codice
         except:
             QMessageBox.critical(self, 'Errore', 'Controllare i dati inseriti', QMessageBox.Ok, QMessageBox.Ok)
             return
