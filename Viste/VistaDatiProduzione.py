@@ -2,7 +2,7 @@ import os.path
 import pickle
 
 #import current as current
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
 from PyQt5.QtWidgets import QWidget, QGridLayout, QPushButton, QSizePolicy, QLabel, QVBoxLayout, QDialogButtonBox, \
     QDialog, QLineEdit, QMessageBox, QHBoxLayout, QListView
 from PyQt5 import QtCore
@@ -19,7 +19,7 @@ class VistaDatiProduzione(QWidget):
         self.aggiorna_produzione()
         self.layout.addWidget(self.list_view)
 
-        self.resize(400, 300)
+        self.resize(600, 300)
         self.setWindowTitle("Cronologia Produzioni")
         self.setLayout(self.layout)
         self.show()
@@ -39,8 +39,6 @@ class VistaDatiProduzione(QWidget):
             dati = f"Codice:{produzione.codiceProduzione} - inizio:{produzione.dataInizio.strftime('%d/%m/%Y')} fine:{produzione.dataFine.strftime('%d/%m/%Y')} - Temperatura:{produzione.temperatura} Livello:{produzione.livello} Composto:{produzione.composto}"
             item.setText(dati)
             item.setEditable(False)
-            font = item.font()
-            font.setPointSize(18)
-            item.setFont(font)
+            item.setFont(QFont('Arial', 10))
             listview_model.appendRow(item)
         self.list_view.setModel(listview_model)
