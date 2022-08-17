@@ -45,6 +45,17 @@ class Inventario:
         else:
             return None
 
+    def ricercaMateria(self, nomeMateria):
+        if os.path.isfile('Dati/Inventario.pickle'):
+            with open('Dati/Inventario.pickle', 'rb') as f:
+                materia = pickle.load(f)
+                for materia in materia.values():
+                    if materia.nome == nomeMateria:
+                        return materia
+                return None
+        else:
+            return None
+
     # metodo per la visualizzazione dell'inventario
     def visualizzaInventario(self):
         if os.path.isfile('Dati\Inventario.pickle'):
