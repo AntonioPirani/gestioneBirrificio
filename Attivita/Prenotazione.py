@@ -26,7 +26,7 @@ class Prenotazione:
         else:
             iTot = self.recuperaPrezzo(self.prodotti.tipologia) * self.prodotti.quantita
             qTot = self.prodotti.quantita
-        self.importoTotale = iTot
+        self.importoTotale = round(iTot, 2)
         self.quantitaTotale = qTot
 
 
@@ -52,6 +52,12 @@ class Prenotazione:
                 self.dataInserimento = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 self.prodotti = prodotti
                 self.calcolaTotale()
+
+                if isinstance(self.prodotti, Iterable):
+                    for elem in self.prodotti:
+                        self.riservaQuantita(elem)
+                else:
+                    self.riservaQuantita(self.prodotti)
 
                 prenotazione = {}
                 if os.path.isfile('Dati/Prenotazioni.pickle'):

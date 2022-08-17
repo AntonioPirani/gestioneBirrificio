@@ -42,7 +42,7 @@ class Acquisto:
         else:
             iTot = self.recuperaPrezzo(self.elencoProdotti.tipologia) * self.elencoProdotti.quantita
             qTot = self.elencoProdotti.quantita
-        self.importoTotale = iTot
+        self.importoTotale = round(iTot, 2)
         self.quantitaTotale = qTot
 
 

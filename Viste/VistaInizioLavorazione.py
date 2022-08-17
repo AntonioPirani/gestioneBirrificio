@@ -9,7 +9,7 @@ import os
 import pandas as pd
 
 from Attivita.Produzione import Produzione
-from Servizio.Prodotto import Prodotto
+from Servizio.Bottiglia import Bottiglia
 from Attivita.Materia import Materia
 
 class VistaInizioLavorazione(QWidget):
@@ -51,8 +51,12 @@ class VistaInizioLavorazione(QWidget):
 
         self.comboBox.addItem("Vienna")
         self.comboBox.addItem("Monaco")
+        self.comboBox.addItem("Pilsen")
+        self.comboBox.addItem("Carapilsen")
 
+        self.comboBox2.addItem("Giana")
         self.comboBox2.addItem("Papola")
+        self.comboBox2.addItem("Gradina")
         self.comboBox2.addItem("Mezzavalle")
 
         self.button.clicked.connect(self.iniziaLavorazione)
@@ -61,7 +65,7 @@ class VistaInizioLavorazione(QWidget):
         self.materia = None
 
         self.resize(400, 350)
-        self.setWindowTitle("Vista Inizio Lavorazione")
+        self.setWindowTitle("Inizio Lavorazione")
         self.setLayout(self.layout)
         self.show()
 
@@ -84,7 +88,7 @@ class VistaInizioLavorazione(QWidget):
             self.close()
     
     def getProdotto(self):
-        prodotto = Prodotto()
+        prodotto = Bottiglia()
         prodotto.tipologia = self.comboBox2.currentText()
         prodotto.quantita = self.spinBox.value()
         return prodotto
