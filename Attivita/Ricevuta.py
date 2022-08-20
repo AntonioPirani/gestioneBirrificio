@@ -28,14 +28,9 @@ class Ricevuta:
     def setImporto(self, Importo):
          self.Importo = Importo
 
-    def getImporto(self):
-        return self.Importo
-    def setImporto(self, Importo):
-        self.Importo = Importo
-
     def getProdotti(self):
         return self.Prodotti
-    def setImporto(self, Prodotti):
+    def setProdotto(self, Prodotti):
         self.Prodotti = Prodotti
 
     # metodo per la ricerca di una ricevuta
