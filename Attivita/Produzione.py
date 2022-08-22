@@ -31,6 +31,7 @@ class Produzione:
         self.prodotto = prodotto
         self.aggiornaMagazzinoProdotti(self.prodotto)
         self.registraProdotto(codiceProduzione)
+        return self
 
     def visualizzaProduzione(self):
         return {
@@ -148,6 +149,19 @@ class Produzione:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
         print(inventario_m)
 
+    def controllaLavInCorso(self):
+        ok = False
+        if os.path.isfile('Dati\Produzioni.pickle'):
+            with open('Dati\Produzioni.pickle', 'rb') as file0:
+                produzioni = dict(pickle.load(file0))
+                for produzione in produzioni.values():
+                    if produzione.dataFine >= pd.Timestamp(datetime.date.today()):
+                        ok = True
+            file0.close()
+        else:
+            ok = False
+        return ok
+
     def getTemperatura(self):
         return self.temperatura
     def setTemperatura(self, temperatura):
@@ -162,3 +176,9 @@ class Produzione:
         return self.composto
     def setComposto(self, composto):
         self.composto = composto
+
+    def setDataInizio(self, dataInizio):
+        self.dataInizio = dataInizio
+
+    def setDataFine(self, dataFine):
+        self.dataFine = dataFine
