@@ -44,7 +44,6 @@ class Materia:
                 # accesso tramite chiave
                 f.close()
                 try:
-                    print(self)
                     return materie[self.codice]
                 except:
                     return None

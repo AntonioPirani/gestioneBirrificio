@@ -92,10 +92,10 @@ class AggiungiMateriaWidget(QWidget):
 
         self.row.addWidget(QLabel('Nome'))
         self.comboBox = QComboBox()
-        self.comboBox.addItem('Monaco')
         self.comboBox.addItem('Vienna')
-        self.comboBox2.addItem("Pilsen ")
-        self.comboBox2.addItem("Carapilsen")
+        self.comboBox.addItem('Monaco')
+        self.comboBox.addItem("Pilsen ")
+        self.comboBox.addItem("Carapilsen")
         self.row.addWidget(self.comboBox)
 
         self.row.addWidget(QLabel('Quantità'))
