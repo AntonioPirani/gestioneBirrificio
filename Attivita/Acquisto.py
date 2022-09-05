@@ -136,16 +136,16 @@ class Acquisto:
         for prodotto in inventario.values():
             try:
                 if prodotto.tipologia == elem.tipologia:
-                    elem.quantita = prodotto.quantita - elem.quantita
+                    prodotto.quantita = prodotto.quantita - elem.quantita
             except:
                 try:
                     if prodotto.nome == elem.tipologia:
-                        elem.quantita = prodotto.quantita - elem.quantita
+                        prodotto.quantita = prodotto.quantita - elem.quantita
                 except:
                     print('AttributeError')
                     return False
 
-        inventario[elem.tipologia] = elem
+        inventario[elem.tipologia] = prodotto
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)

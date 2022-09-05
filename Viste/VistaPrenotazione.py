@@ -94,7 +94,8 @@ class VistaPrenotazione(QWidget):
     def eliminaPrenotazione(self):
         dlg = CustomDialog(self)
         if dlg.exec():
-            Prenotazione().rimuoviPrenotazione(self.prenotazione.codice)
+            pren = Prenotazione()
+            pren.rimuoviPrenotazione(self.prenotazione.codice)
             msgBox = QMessageBox()
             msgBox.setText('Prenotazione eliminata con successo')
             msgBox.exec()

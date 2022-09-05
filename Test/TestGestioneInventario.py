@@ -21,7 +21,7 @@ class TestGestioneInventario(unittest.TestCase):
         inventario = Inventario()
         materia = Materia()
         prima = inventario.ricercaMateria("Monaco")
-        materia.aggiungiMateria(3,"","","Monaco",4,datetime.datetime(1970, 1, 1))
+        materia.aggiungiMateria(3, "", "", "Monaco", 4, datetime.datetime(1970, 1, 1))
         inventario.aggiornaMagazzino(materia)
         aggiornato = None
         if os.path.isfile('Dati/Inventario.pickle'):

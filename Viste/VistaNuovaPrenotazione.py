@@ -71,7 +71,6 @@ class VistaNuovaPrenotazione(QWidget):
             if widget is not None:
                 tipologia = widget.getTipologia()
                 quantita = widget.getQuantita()
-
                 if tipologia in self.carrello or quantita == 0:
                     errore = True
                     break
@@ -86,12 +85,14 @@ class VistaNuovaPrenotazione(QWidget):
             QMessageBox.critical(self, 'Errore', 'Inserisci i dati corretti', QMessageBox.Ok, QMessageBox.Ok)
 
         else:
+            verifica = False
             if self.codice == 0:
                 n = random.randint(1, 999999)
+                verifica = prenotazione.aggiungiPrenotazione(n, self.cliente, elenco)
             else:
                 n = self.codice
+                verifica = prenotazione.modificaPrenotazione(n, self.cliente, elenco)
 
-            verifica = prenotazione.aggiungiPrenotazione(n, self.cliente, elenco)
             if not verifica:
                 QMessageBox.critical(self, 'Errore', 'Prenotazione non andata a buon fine', QMessageBox.Ok,
                                      QMessageBox.Ok)

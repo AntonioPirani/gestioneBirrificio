@@ -17,7 +17,7 @@ class TestGestionePrenotazioni(unittest.TestCase):
         self.assertIsNotNone(prenotazioni)
         self.assertIn(100, prenotazioni)
         self.prenotazione = Prenotazione()
-        self.prenotazione.rimuoviPrenotazione(442509)
+        self.prenotazione.rimuoviPrenotazione(100)
         if os.path.isfile('Dati/Prenotazioni.pickle'):
             with open('Dati/Prenotazioni.pickle', 'rb') as f:
                 prenotazioni = pickle.load(f)
