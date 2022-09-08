@@ -15,20 +15,20 @@ class TestGestioneInventario(unittest.TestCase):
             with open('Dati/Materie.pickle', 'rb') as f:
                 materie = pickle.load(f)
         self.assertIsNotNone(materie)
-        self.assertIn(2, materie)
+        self.assertIn(1, materie)
 
     def testAggiornaMagazzino(self):
         inventario = Inventario()
         materia = Materia()
-        prima = inventario.ricercaMateria("Monaco")
-        materia.aggiungiMateria(3, "", "", "Monaco", 4, datetime.datetime(1970, 1, 1))
+        prima = inventario.ricercaMateria("Vienna")
+        materia.aggiungiMateria(2, "", "", "Vienna", 5, datetime.datetime(1970, 1, 1))
         inventario.aggiornaMagazzino(materia)
         aggiornato = None
         if os.path.isfile('Dati/Inventario.pickle'):
             with open('Dati/Inventario.pickle', 'rb') as f:
                 aggiornato = pickle.load(f)
 
-        self.assertNotEqual(prima.quantita,inventario.ricercaMateria("Monaco"))
+        self.assertNotEqual(prima.quantita,inventario.ricercaMateria("Vienna"))
         self.assertIsNotNone(aggiornato)
-        self.assertIn("Monaco", aggiornato)
+        self.assertIn("Vienna", aggiornato)
 
