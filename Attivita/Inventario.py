@@ -50,8 +50,15 @@ class Inventario:
             with open('Dati/Inventario.pickle', 'rb') as f:
                 materia = pickle.load(f)
                 for materia in materia.values():
-                    if materia.nome == nomeMateria:
-                        return materia
+                    try:
+                        if materia.nome == nomeMateria:
+                            return materia
+                    except:
+                        try:
+                            if materia.tipologia == nomeMateria:
+                                print('Attributo errato')
+                        except:
+                            return None
                 return None
         else:
             return None
