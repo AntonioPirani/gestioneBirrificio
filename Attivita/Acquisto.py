@@ -56,7 +56,7 @@ class Acquisto:
                 self.codice = codiceP
                 self.elencoProdotti = prenotazione.prodotti
                 aggiorna = False
-                Prenotazione().rimuoviPrenotazione(codiceP, True)
+                Prenotazione().rimuoviPrenotazione(codiceP, False)
             else:
                 print('Nessuna prenotazione trovata')
                 return False
