@@ -56,7 +56,7 @@ class Acquisto:
                 self.codice = codiceP
                 self.elencoProdotti = prenotazione.prodotti
                 aggiorna = False
-                Prenotazione().rimuoviPrenotazione(codiceP)
+                Prenotazione().rimuoviPrenotazione(codiceP, True)
             else:
                 print('Nessuna prenotazione trovata')
                 return False
@@ -133,10 +133,13 @@ class Acquisto:
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
+        nome = ''
         for prodotto in inventario.values():
             try:
                 if prodotto.tipologia == elem.tipologia:
                     prodotto.quantita = prodotto.quantita - elem.quantita
+                    nome = prodotto.tipologia
+                    break
             except:
                 try:
                     if prodotto.nome == elem.tipologia:
@@ -144,9 +147,8 @@ class Acquisto:
                 except:
                     print('AttributeError')
                     return False
-
-        inventario[elem.tipologia] = prodotto
-
+        if nome != '':
+            inventario[nome] = prodotto
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
 

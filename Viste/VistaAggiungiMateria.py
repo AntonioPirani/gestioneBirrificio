@@ -40,6 +40,7 @@ class VistaAggiungiMateria(QWidget):
         self.boxH.addWidget(self.bottoneConferma)
 
         self.layoutV.addLayout(self.boxH)
+        self.resize(300, 200)
         self.setLayout(self.layoutV)
 
     def aggiungiMateria(self):
@@ -94,7 +95,7 @@ class AggiungiMateriaWidget(QWidget):
         self.comboBox = QComboBox()
         self.comboBox.addItem('Vienna')
         self.comboBox.addItem('Monaco')
-        self.comboBox.addItem("Pilsen ")
+        self.comboBox.addItem("Pilsen")
         self.comboBox.addItem("Carapilsen")
         self.row.addWidget(self.comboBox)
 

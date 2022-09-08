@@ -75,7 +75,7 @@ class Prenotazione:
         else:
             return False
 
-    def rimuoviPrenotazione(self, codice):
+    def rimuoviPrenotazione(self, codice, daAggiorna=False):
         prenotazione = self.ricercaPrenotazione(codice)
         if os.path.isfile('Dati\Prenotazioni.pickle'):
             with open('Dati\Prenotazioni.pickle', 'rb') as f1:
@@ -86,11 +86,12 @@ class Prenotazione:
                 pickle.dump(prenotazioni, f2, pickle.HIGHEST_PROTOCOL)
 
             #if self.confermata is True:
-            if isinstance(prenotazione.prodotti, Iterable):
-                for elem in prenotazione.prodotti:
-                    self.riassegnaQuantita(elem)
-            else:
-                self.riassegnaQuantita(prenotazione.prodotti)
+            if daAggiorna is True:
+                if isinstance(prenotazione.prodotti, Iterable):
+                    for elem in prenotazione.prodotti:
+                        self.riassegnaQuantita(elem)
+                else:
+                    self.riassegnaQuantita(prenotazione.prodotti)
 
             self.codice = 0
             self.cliente = None
@@ -272,10 +273,13 @@ class Prenotazione:
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
+        nome = ''
         for prodotto in inventario.values():
             try:
                 if prodotto.tipologia == elem.tipologia:
                     prodotto.quantita = prodotto.quantita - elem.quantita
+                    nome = prodotto.tipologia
+                    break
             except:
                 try:
                     if prodotto.nome == elem.tipologia:
@@ -283,9 +287,8 @@ class Prenotazione:
                 except:
                     print('AttributeError')
                     return False
-
-        inventario[elem.tipologia] = prodotto
-
+        if nome != '':
+            inventario[nome] = prodotto
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)
 
@@ -295,10 +298,13 @@ class Prenotazione:
             with open('Dati\Inventario.pickle', 'rb') as f:
                 inventario = dict(pickle.load(f))
 
+            nome = ''
             for prodotto in inventario.values():
                 try:
                     if prodotto.tipologia == elem.tipologia:
                         prodotto.quantita = prodotto.quantita + elem.quantita
+                        nome = prodotto.tipologia
+                        break
                 except:
                     try:
                         if prodotto.nome == elem.tipologia:
@@ -306,7 +312,8 @@ class Prenotazione:
                     except:
                         return False
 
-            inventario[elem.tipologia] = prodotto
+            if nome != '':
+                inventario[nome] = prodotto
 
             with open('Dati/Inventario.pickle', 'wb') as file:
                 pickle.dump(inventario, file, pickle.HIGHEST_PROTOCOL)

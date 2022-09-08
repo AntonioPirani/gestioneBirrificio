@@ -121,7 +121,7 @@ class Produzione:
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
-        print(inventario_m)
+        #print(inventario_m)
 
     def aggiornaMagazzinoProdotti(self, prodottoAggiunto):
         self.prodottoAggiunto = prodottoAggiunto
@@ -147,7 +147,7 @@ class Produzione:
 
         with open('Dati/Inventario.pickle', 'wb') as file:
             pickle.dump(inventario_m, file, pickle.HIGHEST_PROTOCOL)
-        print(inventario_m)
+        #print(inventario_m)
 
     def controllaLavInCorso(self):
         ok = False
